@@ -1,0 +1,26 @@
+product_id,product_name,category_l1,category_l2,brand,sku,cost_price,list_price,weight_kg,is_active,created_date
+PROD-001,Wireless Noise-Cancelling Headphones,Electronics,Audio,SoundWave,SKU-EL-001,45.00,129.99,0.35,true,2021-06-01
+PROD-002,Ergonomic Office Chair,Furniture,Seating,ErgoComfort,SKU-FU-001,120.00,349.99,18.50,true,2021-06-01
+PROD-003,Stainless Steel Water Bottle 32oz,Kitchen,Drinkware,HydroLife,SKU-KT-001,8.50,34.99,0.45,true,2021-06-01
+PROD-004,Yoga Mat Premium,Sports,Fitness,FlexFit,SKU-SP-001,12.00,49.99,1.20,true,2021-06-01
+PROD-005,Running Shoes Men Size 10,Footwear,Athletic,SpeedStep,SKU-FW-001,38.00,99.99,0.80,true,2021-06-01
+PROD-006,Slim Fit Denim Jeans,Clothing,Bottoms,UrbanThread,SKU-CL-001,18.00,59.99,0.55,true,2021-06-01
+PROD-007,Vitamin C Serum 30ml,Beauty,Skincare,GlowLab,SKU-BT-001,9.00,42.99,0.10,true,2021-06-15
+PROD-008,Smart Watch Fitness Tracker,Electronics,Wearables,TechPulse,SKU-EL-002,65.00,199.99,0.12,true,2021-06-15
+PROD-009,Non-Stick Cookware Set 10pc,Kitchen,Cookware,ChefMate,SKU-KT-002,55.00,149.99,4.20,true,2021-06-15
+PROD-010,Backpack 30L Waterproof,Bags,Backpacks,TrailMaster,SKU-BG-001,22.00,74.99,0.90,true,2021-06-15
+PROD-011,Mechanical Keyboard RGB,Electronics,Peripherals,TypeForce,SKU-EL-003,35.00,109.99,0.95,true,2021-07-01
+PROD-012,Scented Soy Candle Set,Home,Decor,LuminaHome,SKU-HM-001,11.00,39.99,0.60,true,2021-07-01
+PROD-013,Resistance Bands Set 5pc,Sports,Fitness,FlexFit,SKU-SP-002,6.00,24.99,0.30,true,2021-07-01
+PROD-014,Cotton T-Shirt Pack 3,Clothing,Tops,BasicCo,SKU-CL-002,12.00,34.99,0.45,true,2021-07-01
+PROD-015,Portable Bluetooth Speaker,Electronics,Audio,SoundWave,SKU-EL-004,28.00,79.99,0.55,true,2021-07-01
+PROD-016,Face Moisturizer SPF 30,Beauty,Skincare,GlowLab,SKU-BT-002,10.00,44.99,0.15,true,2021-07-15
+PROD-017,Wooden Desk Organizer,Home,Office,WoodCraft,SKU-HM-002,14.00,49.99,0.80,true,2021-07-15
+PROD-018,Protein Powder Vanilla 2lb,Nutrition,Supplements,NutriBoost,SKU-NU-001,25.00,59.99,0.95,true,2021-07-15
+PROD-019,Laptop Stand Adjustable,Electronics,Accessories,DeskPro,SKU-EL-005,18.00,54.99,0.75,true,2021-07-15
+PROD-020,Linen Bed Sheet Set Queen,Home,Bedding,SleepLux,SKU-HM-003,30.00,89.99,1.50,true,2021-08-01
+PROD-021,Trail Running Shoes Women,Footwear,Athletic,SpeedStep,SKU-FW-002,42.00,109.99,0.75,true,2021-08-01
+PROD-022,Insulated Lunch Bag,Kitchen,Storage,HydroLife,SKU-KT-003,9.00,29.99,0.30,true,2021-08-01
+PROD-023,Hair Dryer 1875W,Beauty,Hair Care,GlowLab,SKU-BT-003,20.00,69.99,0.70,true,2021-08-01
+PROD-024,Dumbbell Set 20kg,Sports,Weights,IronForge,SKU-SP-003,45.00,119.99,20.00,true,2021-08-01
+PROD-025,USB-C Hub 7-in-1,Electronics,Accessories,TechPulse,SKU-EL-006,15.00,49.99,0.18,false,2021-08-15

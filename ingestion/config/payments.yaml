@@ -1,0 +1,37 @@
+dataset: payments
+source_file: data/raw/payments.csv
+target_schema: bronze
+target_table: raw_payments
+load_type: incremental
+primary_key: payment_id
+watermark_column: payment_date
+delimiter: ","
+encoding: utf-8
+expected_columns:
+  - payment_id
+  - order_id
+  - payment_date
+  - payment_method
+  - payment_status
+  - amount
+  - currency
+  - transaction_id
+  - gateway
+column_types:
+  payment_id: VARCHAR
+  order_id: VARCHAR
+  payment_date: TIMESTAMP
+  payment_method: VARCHAR
+  payment_status: VARCHAR
+  amount: DECIMAL
+  currency: VARCHAR
+  transaction_id: VARCHAR
+  gateway: VARCHAR
+not_null_columns:
+  - payment_id
+  - order_id
+  - payment_date
+  - amount
+unique_columns:
+  - payment_id
+  - transaction_id

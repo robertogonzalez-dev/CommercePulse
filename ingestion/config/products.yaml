@@ -1,0 +1,41 @@
+dataset: products
+source_file: data/raw/products.csv
+target_schema: bronze
+target_table: raw_products
+load_type: full
+primary_key: product_id
+watermark_column: created_date
+delimiter: ","
+encoding: utf-8
+expected_columns:
+  - product_id
+  - product_name
+  - category_l1
+  - category_l2
+  - brand
+  - sku
+  - cost_price
+  - list_price
+  - weight_kg
+  - is_active
+  - created_date
+column_types:
+  product_id: VARCHAR
+  product_name: VARCHAR
+  category_l1: VARCHAR
+  category_l2: VARCHAR
+  brand: VARCHAR
+  sku: VARCHAR
+  cost_price: DECIMAL
+  list_price: DECIMAL
+  weight_kg: DECIMAL
+  is_active: BOOLEAN
+  created_date: DATE
+not_null_columns:
+  - product_id
+  - product_name
+  - category_l1
+  - sku
+unique_columns:
+  - product_id
+  - sku

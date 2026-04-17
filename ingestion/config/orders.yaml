@@ -1,0 +1,44 @@
+dataset: orders
+source_file: data/raw/orders.csv
+target_schema: bronze
+target_table: raw_orders
+load_type: incremental
+primary_key: order_id
+watermark_column: order_date
+delimiter: ","
+encoding: utf-8
+expected_columns:
+  - order_id
+  - customer_id
+  - order_date
+  - order_status
+  - channel
+  - shipping_address_city
+  - shipping_address_state
+  - shipping_address_country
+  - shipping_address_zip
+  - promotion_code
+  - shipping_cost
+  - estimated_delivery_date
+  - actual_delivery_date
+column_types:
+  order_id: VARCHAR
+  customer_id: VARCHAR
+  order_date: TIMESTAMP
+  order_status: VARCHAR
+  channel: VARCHAR
+  shipping_address_city: VARCHAR
+  shipping_address_state: VARCHAR
+  shipping_address_country: VARCHAR
+  shipping_address_zip: VARCHAR
+  promotion_code: VARCHAR
+  shipping_cost: DECIMAL
+  estimated_delivery_date: DATE
+  actual_delivery_date: DATE
+not_null_columns:
+  - order_id
+  - customer_id
+  - order_date
+  - order_status
+unique_columns:
+  - order_id

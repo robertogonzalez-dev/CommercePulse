@@ -13,13 +13,13 @@ SESS-00011,CUST-0012,2023-01-15 14:22:50,2023-01-15 14:35:32,referral,mobile,/pr
 SESS-00012,CUST-0013,2023-01-16 10:36:17,2023-01-16 10:49,paid_search,desktop,/products/nutrition,5,2,2,1,ORD-10012,CAMP-003,google,cpc
 SESS-00013,CUST-0014,2023-01-17 16:03,2023-01-17 16:16:33,direct,mobile,/,3,2,1,1,ORD-10013,,direct,none
 SESS-00014,CUST-0001,2023-01-19 09:30:10,2023-01-19 09:43,organic_search,desktop,/products/electronics,5,3,1,1,ORD-10014,,google,organic
-SESS-00015,,2023-01-20 08:15:22,2023-01-20 08:22:44,organic_search,mobile,/,2,1,0,0,,,,google,organic
+SESS-00015,,2023-01-20 08:15:22,2023-01-20 08:22:44,organic_search,mobile,/,2,1,0,0,,,google,organic
 SESS-00016,,2023-01-20 09:30:11,2023-01-20 09:35:50,paid_social,mobile,/sale,2,1,0,0,,CAMP-001,instagram,cpc
 SESS-00017,CUST-0015,2023-01-20 13:17:29,2023-01-20 13:30:11,organic_search,desktop,/products/footwear,6,3,2,1,ORD-10015,,google,organic
 SESS-00018,CUST-0017,2023-01-22 11:43:44,2023-01-22 11:57,paid_social,mobile,/sale,7,4,2,1,ORD-10016,CAMP-001,instagram,cpc
 SESS-00019,CUST-0018,2023-01-23 15:00:28,2023-01-23 15:14,referral,desktop,/products/kitchen,4,2,1,1,ORD-10017,,partner_site,referral
 SESS-00020,CUST-0019,2023-01-24 10:25:33,2023-01-24 10:39,organic_search,tablet,/,3,1,1,1,ORD-10018,,google,organic
-SESS-00021,,2023-01-25 11:05:17,2023-01-25 11:10:44,organic_search,mobile,/products/electronics,2,1,0,0,,,,google,organic
+SESS-00021,,2023-01-25 11:05:17,2023-01-25 11:10:44,organic_search,mobile,/products/electronics,2,1,0,0,,,google,organic
 SESS-00022,CUST-0020,2023-01-25 14:12:05,2023-01-25 14:26,paid_search,desktop,/products/sports,4,2,1,1,,CAMP-003,google,cpc
 SESS-00023,CUST-0021,2023-01-26 09:39,2023-01-26 09:53,direct,desktop,/,4,2,2,1,ORD-10020,,direct,none
 SESS-00024,CUST-0003,2023-02-01 10:17,2023-02-01 10:31,email,mobile,/email-offers,5,3,2,1,ORD-10021,CAMP-005,email,newsletter

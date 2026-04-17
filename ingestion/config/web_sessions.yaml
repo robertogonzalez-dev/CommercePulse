@@ -1,0 +1,46 @@
+dataset: web_sessions
+source_file: data/raw/web_sessions.csv
+target_schema: bronze
+target_table: raw_web_sessions
+load_type: incremental
+primary_key: session_id
+watermark_column: session_start
+delimiter: ","
+encoding: utf-8
+expected_columns:
+  - session_id
+  - customer_id
+  - session_start
+  - session_end
+  - channel
+  - device_type
+  - landing_page
+  - pages_viewed
+  - products_viewed
+  - cart_adds
+  - checkout_started
+  - order_id
+  - campaign_id
+  - utm_source
+  - utm_medium
+column_types:
+  session_id: VARCHAR
+  customer_id: VARCHAR
+  session_start: TIMESTAMP
+  session_end: TIMESTAMP
+  channel: VARCHAR
+  device_type: VARCHAR
+  landing_page: VARCHAR
+  pages_viewed: INTEGER
+  products_viewed: INTEGER
+  cart_adds: INTEGER
+  checkout_started: INTEGER
+  order_id: VARCHAR
+  campaign_id: VARCHAR
+  utm_source: VARCHAR
+  utm_medium: VARCHAR
+not_null_columns:
+  - session_id
+  - session_start
+unique_columns:
+  - session_id

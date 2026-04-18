@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: int_order_financials
+    description: >
+      Order-level financial rollup. Joins order items, payments, and refunds into
+      a single pre-aggregated record per order. Consumed by fact_orders and
+      int_customer_order_metrics to avoid redundant multi-table joins downstream.
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+      - name: gross_revenue
+        description: "Net item subtotal + shipping cost. Does not subtract refunds."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      - name: net_revenue
+        description: "Gross revenue minus completed refunds."
+
+  - name: int_customer_order_metrics
+    description: >
+      Customer-level transactional summary aggregated from staging tables.
+      Provides order counts, revenue totals, CLV inputs, and customer segment
+      classification. Used by dim_customer and mart_customer_ltv.
+    columns:
+      - name: customer_id
+        tests: [unique, not_null]
+      - name: customer_segment
+        tests:
+          - accepted_values:
+              values: ["no_purchase", "one_time", "repeat", "loyal"]
+      - name: total_gross_revenue
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"

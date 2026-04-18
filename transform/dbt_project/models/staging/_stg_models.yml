@@ -1,0 +1,151 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned and standardised customer records. One row per customer. Deduped on customer_id keeping the most-recently ingested record."
+    columns:
+      - name: customer_id
+        description: "Natural key from source system."
+        tests: [unique, not_null]
+      - name: email
+        description: "Lowercased and trimmed email address."
+        tests: [unique, not_null]
+      - name: acquisition_channel
+        tests: [not_null]
+      - name: registered_at
+        tests: [not_null]
+      - name: is_active
+        tests: [not_null]
+
+  - name: stg_products
+    description: "Cleaned product catalogue. One row per product. Includes derived gross_margin and gross_margin_pct."
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+      - name: sku
+        tests: [unique, not_null]
+      - name: category_l1
+        tests: [not_null]
+      - name: list_price
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      - name: cost_price
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_orders
+    description: "Cleaned order header records. One row per order. Includes is_late_delivery and is_fulfilled flags."
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+      - name: customer_id
+        tests: [not_null]
+      - name: ordered_at
+        tests: [not_null]
+      - name: order_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["pending", "processing", "shipped", "delivered", "cancelled", "returned"]
+      - name: channel
+        tests: [not_null]
+
+  - name: stg_order_items
+    description: "Cleaned order line items. One row per order_item_id. Includes gross_line_total and net_line_total."
+    columns:
+      - name: order_item_id
+        tests: [unique, not_null]
+      - name: order_id
+        tests: [not_null]
+      - name: product_id
+        tests: [not_null]
+      - name: quantity
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+      - name: unit_price
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_payments
+    description: "Cleaned payment records. One row per payment. Includes is_successful flag."
+    columns:
+      - name: payment_id
+        tests: [unique, not_null]
+      - name: order_id
+        tests: [not_null]
+      - name: transaction_id
+        tests: [unique, not_null]
+      - name: amount
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+      - name: payment_status
+        tests:
+          - accepted_values:
+              values: ["success", "failed"]
+
+  - name: stg_refunds
+    description: "Cleaned refund records. One row per refund. Includes is_completed flag."
+    columns:
+      - name: refund_id
+        tests: [unique, not_null]
+      - name: order_id
+        tests: [not_null]
+      - name: refund_amount
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      - name: refund_status
+        tests:
+          - accepted_values:
+              values: ["approved", "shipping_label_sent"]
+
+  - name: stg_inventory
+    description: "Cleaned inventory snapshot per product per warehouse. Includes stock_status classification."
+    columns:
+      - name: inventory_id
+        tests: [unique, not_null]
+      - name: product_id
+        tests: [not_null]
+      - name: warehouse_id
+        tests: [not_null]
+      - name: stock_status
+        tests:
+          - accepted_values:
+              values: ["in_stock", "low_stock", "out_of_stock"]
+
+  - name: stg_marketing_spend
+    description: "Cleaned campaign spend with derived efficiency metrics (CTR, CVR, ROAS, CPC)."
+    columns:
+      - name: spend_id
+        tests: [unique, not_null]
+      - name: campaign_id
+        tests: [not_null]
+      - name: channel
+        tests: [not_null]
+      - name: amount_spent
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_web_sessions
+    description: "Cleaned web session records. Includes funnel flags (is_bounce, checkout_started, is_converted)."
+    columns:
+      - name: session_id
+        tests: [unique, not_null]
+      - name: session_started_at
+        tests: [not_null]
+      - name: device_type
+        tests:
+          - accepted_values:
+              values: ["desktop", "mobile", "tablet"]

@@ -1,0 +1,71 @@
+version: 2
+
+models:
+
+  - name: mart_sales_summary
+    description: >
+      Daily sales aggregation with period labels (year, quarter, month).
+      Primary KPI surface for dashboards. Includes order volume, revenue,
+      AOV, discount rate, cancellation rate, and refund rate.
+    columns:
+      - name: date
+        tests: [unique, not_null]
+      - name: gross_revenue
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      - name: refund_rate_pct
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: mart_customer_ltv
+    description: >
+      Customer lifetime value mart with historical CLV, predicted 2-year CLV,
+      RFM scores (1-5), and RFM segment labels. One row per customer.
+      Designed for retention, loyalty, and targeted marketing analysis.
+    columns:
+      - name: customer_key
+        tests: [unique, not_null]
+      - name: customer_id
+        tests: [unique, not_null]
+      - name: rfm_segment
+        tests:
+          - accepted_values:
+              values: ["Champion", "Loyal", "New Customer", "At Risk", "Lost",
+                       "Needs Attention", "Never Purchased"]
+      - name: historical_clv
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: mart_product_performance
+    description: >
+      Product-level sales, margin, refund, and inventory position mart.
+      One row per product. Supports merchandising and assortment decisions.
+    columns:
+      - name: product_key
+        tests: [unique, not_null]
+      - name: product_id
+        tests: [unique, not_null]
+      - name: sku
+        tests: [unique, not_null]
+
+  - name: mart_channel_performance
+    description: >
+      Channel-level performance mart joining order revenue, session traffic,
+      and marketing spend. Enables cross-channel ROI comparison.
+    columns:
+      - name: channel_name
+        tests: [unique, not_null]
+
+  - name: mart_refund_analysis
+    description: >
+      Refund aggregation by reason, channel, product category, and time period.
+      Surfaces quality signals and revenue impact of returns.
+
+  - name: mart_inventory_risk
+    description: >
+      Inventory risk assessment per product per warehouse. Includes days-of-cover,
+      risk level (critical/high/medium/low), and revenue-at-risk values.
+      Ordered by risk level descending for operational use.

@@ -1,0 +1,204 @@
+version: 2
+
+models:
+
+  # ─── DIMENSIONS ─────────────────────────────────────────────────────────────
+
+  - name: dim_date
+    description: >
+      Calendar dimension spanning {{ var('date_spine_start') }} to
+      {{ var('date_spine_end') }}. date_key is YYYYMMDD integer for use as FK
+      in fact tables. No source dependency — generated entirely in dbt.
+    columns:
+      - name: date_key
+        tests: [unique, not_null]
+      - name: date_day
+        tests: [unique, not_null]
+
+  - name: dim_customer
+    description: >
+      SCD Type 1 customer dimension. Enriched with behavioural segment and
+      lifecycle attributes from int_customer_order_metrics. One row per customer.
+    columns:
+      - name: customer_key
+        tests: [unique, not_null]
+      - name: customer_id
+        tests: [unique, not_null]
+      - name: email
+        tests: [unique, not_null]
+      - name: customer_segment
+        tests:
+          - accepted_values:
+              values: ["no_purchase", "one_time", "repeat", "loyal"]
+
+  - name: dim_product
+    description: >
+      Product dimension with pricing tiers, margin data, and category hierarchy.
+      One row per product.
+    columns:
+      - name: product_key
+        tests: [unique, not_null]
+      - name: product_id
+        tests: [unique, not_null]
+      - name: sku
+        tests: [unique, not_null]
+      - name: price_tier
+        tests:
+          - accepted_values:
+              values: ["budget", "mid_range", "premium", "luxury"]
+
+  - name: dim_channel
+    description: >
+      Conformed channel dimension unioning all channel-bearing source tables.
+      Includes channel_type classification and is_paid flag.
+    columns:
+      - name: channel_key
+        tests: [unique, not_null]
+      - name: channel_name
+        tests: [unique, not_null]
+
+  - name: dim_region
+    description: "Geographic dimension built from unique shipping address combinations."
+    columns:
+      - name: region_key
+        tests: [unique, not_null]
+
+  - name: dim_device
+    description: "Device type dimension built from web session data."
+    columns:
+      - name: device_key
+        tests: [unique, not_null]
+      - name: device_type
+        tests: [unique, not_null]
+
+  # ─── FACTS ───────────────────────────────────────────────────────────────────
+
+  - name: fact_orders
+    description: >
+      Order-grain fact table. One row per order. Includes full financial
+      rollup (gross revenue, net revenue, discounts, refunds) and FK references
+      to all relevant dimensions.
+    columns:
+      - name: order_key
+        tests: [unique, not_null]
+      - name: order_id
+        tests: [unique, not_null]
+      - name: customer_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: channel_key
+        tests:
+          - relationships:
+              to: ref('dim_channel')
+              field: channel_key
+      - name: order_status
+        tests:
+          - accepted_values:
+              values: ["pending", "processing", "shipped", "delivered", "cancelled", "returned"]
+      - name: gross_revenue
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      - name: net_revenue
+        description: "Gross revenue minus completed refunds. Can be zero for fully-refunded orders."
+
+  - name: fact_order_items
+    description: >
+      Order-item-grain fact table. One row per line item. Includes contribution
+      margin calculated using product cost from dim_product.
+    columns:
+      - name: order_item_key
+        tests: [unique, not_null]
+      - name: order_item_id
+        tests: [unique, not_null]
+      - name: product_key
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
+      - name: quantity
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+  - name: fact_payments
+    description: "Payment-grain fact. One row per payment transaction."
+    columns:
+      - name: payment_key
+        tests: [unique, not_null]
+      - name: payment_id
+        tests: [unique, not_null]
+      - name: transaction_id
+        tests: [unique, not_null]
+      - name: amount
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+  - name: fact_refunds
+    description: "Refund-grain fact. One row per refund record."
+    columns:
+      - name: refund_key
+        tests: [unique, not_null]
+      - name: refund_id
+        tests: [unique, not_null]
+      - name: refund_amount
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: fact_inventory_snapshots
+    description: >
+      Inventory snapshot fact. One row per product per warehouse per snapshot date.
+      Includes cost and retail inventory valuation.
+    columns:
+      - name: inventory_snapshot_key
+        tests: [unique, not_null]
+      - name: product_key
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
+      - name: stock_status
+        tests:
+          - accepted_values:
+              values: ["in_stock", "low_stock", "out_of_stock"]
+
+  - name: fact_sessions
+    description: "Web session grain fact. One row per session. Includes full conversion funnel flags."
+    columns:
+      - name: session_key
+        tests: [unique, not_null]
+      - name: session_id
+        tests: [unique, not_null]
+      - name: device_key
+        tests:
+          - relationships:
+              to: ref('dim_device')
+              field: device_key
+      - name: funnel_step_reached
+        tests:
+          - accepted_values:
+              values: [0, 1, 2, 3, 4]
+
+  - name: fact_marketing_spend
+    description: "Campaign-grain fact. One row per campaign. Includes ROAS, CPA, CPM, and CPC."
+    columns:
+      - name: marketing_spend_key
+        tests: [unique, not_null]
+      - name: spend_id
+        tests: [unique, not_null]
+      - name: channel_key
+        tests:
+          - relationships:
+              to: ref('dim_channel')
+              field: channel_key

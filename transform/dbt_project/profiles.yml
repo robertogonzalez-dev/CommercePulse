@@ -1,0 +1,27 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# profiles.yml — CommercePulse dbt connection profile
+#
+# USAGE OPTIONS:
+#   Option A (recommended for local dev):
+#     Copy this file to ~/.dbt/profiles.yml
+#
+#   Option B (keep it in the project):
+#     Run dbt commands with: dbt run --profiles-dir .
+#
+# The path below is relative to the transform/dbt_project/ directory.
+# ─────────────────────────────────────────────────────────────────────────────
+
+commercepulse:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../../data/warehouse/commercepulse.duckdb"
+      schema: main
+      threads: 4
+
+    prod:
+      type: duckdb
+      path: "../../data/warehouse/commercepulse.duckdb"
+      schema: main
+      threads: 4

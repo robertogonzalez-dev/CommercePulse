@@ -33,7 +33,7 @@ def kpi_row(metrics: list[dict]) -> None:
         label (str), value (str), delta (str | None), delta_color (str)
     """
     cols = st.columns(len(metrics))
-    for col, m in zip(cols, metrics):
+    for col, m in zip(cols, metrics, strict=False):
         col.metric(
             label=m["label"],
             value=m["value"],

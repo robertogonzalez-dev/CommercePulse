@@ -136,7 +136,7 @@ def category_revenue_bar(df: pd.DataFrame) -> go.Figure:
 
 
 def roas_by_channel(df: pd.DataFrame) -> go.Figure:
-    paid = df[df["is_paid"] == True].dropna(subset=["avg_roas"]).sort_values("avg_roas", ascending=False)
+    paid = df[df["is_paid"]].dropna(subset=["avg_roas"]).sort_values("avg_roas", ascending=False)
     fig = px.bar(
         paid, x="channel_name", y="avg_roas",
         color="avg_roas", color_continuous_scale="Blues",

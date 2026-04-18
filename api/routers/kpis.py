@@ -1,5 +1,4 @@
 import datetime
-from typing import Optional
 
 import duckdb
 from fastapi import APIRouter, Depends, Query
@@ -17,8 +16,8 @@ router = APIRouter(prefix="/kpis", tags=["kpis"])
     summary="Aggregated KPI summary across all metrics",
 )
 def kpi_summary(
-    start_date: Optional[datetime.date] = Query(None, description="Start date (YYYY-MM-DD)"),
-    end_date: Optional[datetime.date] = Query(None, description="End date (YYYY-MM-DD)"),
+    start_date: datetime.date | None = Query(None, description="Start date (YYYY-MM-DD)"),
+    end_date: datetime.date | None = Query(None, description="End date (YYYY-MM-DD)"),
     conn: duckdb.DuckDBPyConnection = Depends(get_db_conn),
 ) -> KPISummary:
     return kpi_service.get_kpi_summary(conn, start_date, end_date)

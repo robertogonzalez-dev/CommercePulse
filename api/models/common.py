@@ -1,5 +1,4 @@
 import datetime
-from typing import Optional
 
 from fastapi import Query
 
@@ -9,19 +8,19 @@ class ReportFilters:
 
     def __init__(
         self,
-        start_date: Optional[datetime.date] = Query(
+        start_date: datetime.date | None = Query(
             None, description="Inclusive start date (YYYY-MM-DD)"
         ),
-        end_date: Optional[datetime.date] = Query(
+        end_date: datetime.date | None = Query(
             None, description="Inclusive end date (YYYY-MM-DD)"
         ),
-        region: Optional[str] = Query(
+        region: str | None = Query(
             None, description="State or country filter"
         ),
-        channel: Optional[str] = Query(
+        channel: str | None = Query(
             None, description="Channel name (e.g. organic_search)"
         ),
-        category: Optional[str] = Query(
+        category: str | None = Query(
             None, description="Product category L1"
         ),
         limit: int = Query(100, ge=1, le=1000, description="Max rows"),

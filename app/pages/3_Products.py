@@ -3,7 +3,7 @@
 import streamlit as st
 
 import app.db as db
-from app.components import charts, filters, kpi_cards
+from app.components import charts, filters
 
 st.set_page_config(page_title="Products — CommercePulse", page_icon="📦", layout="wide")
 
@@ -32,7 +32,6 @@ if tier:
     product_df = product_df[product_df["price_tier"] == tier]
 
 # ── KPIs ──────────────────────────────────────────────────────────────────────
-import plotly.express as px
 
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Total Products", f"{len(product_df):,}")

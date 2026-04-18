@@ -7,7 +7,6 @@ re-querying DuckDB on every Streamlit rerun.
 """
 
 import datetime
-from typing import Optional
 
 import duckdb
 import pandas as pd
@@ -30,8 +29,8 @@ def _q(sql: str, params: list | None = None) -> pd.DataFrame:
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_kpi_summary(
-    start_date: Optional[datetime.date] = None,
-    end_date: Optional[datetime.date] = None,
+    start_date: datetime.date | None = None,
+    end_date: datetime.date | None = None,
 ) -> dict:
     conditions, params = [], []
     if start_date:
@@ -75,8 +74,8 @@ def get_kpi_summary(
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_sales_trend(
-    start_date: Optional[datetime.date] = None,
-    end_date: Optional[datetime.date] = None,
+    start_date: datetime.date | None = None,
+    end_date: datetime.date | None = None,
 ) -> pd.DataFrame:
     conditions, params = [], []
     if start_date:
@@ -95,7 +94,7 @@ def get_sales_trend(
 # ── Products ──────────────────────────────────────────────────────────────────
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
-def get_product_performance(category: Optional[str] = None) -> pd.DataFrame:
+def get_product_performance(category: str | None = None) -> pd.DataFrame:
     conditions, params = [], []
     if category:
         conditions.append("category_l1 = ?")
@@ -111,8 +110,8 @@ def get_product_performance(category: Optional[str] = None) -> pd.DataFrame:
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_customer_ltv(
-    channel: Optional[str] = None,
-    segment: Optional[str] = None,
+    channel: str | None = None,
+    segment: str | None = None,
 ) -> pd.DataFrame:
     conditions, params = [], []
     if channel:
@@ -141,8 +140,8 @@ def get_channel_performance() -> pd.DataFrame:
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_inventory_risk(
-    category: Optional[str] = None,
-    risk_level: Optional[str] = None,
+    category: str | None = None,
+    risk_level: str | None = None,
 ) -> pd.DataFrame:
     conditions, params = [], []
     if category:
@@ -168,10 +167,10 @@ def get_inventory_risk(
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_refund_analysis(
-    start_ym: Optional[str] = None,
-    end_ym: Optional[str] = None,
-    channel: Optional[str] = None,
-    category: Optional[str] = None,
+    start_ym: str | None = None,
+    end_ym: str | None = None,
+    channel: str | None = None,
+    category: str | None = None,
 ) -> pd.DataFrame:
     conditions, params = [], []
     if start_ym:

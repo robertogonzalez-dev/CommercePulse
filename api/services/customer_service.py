@@ -11,10 +11,6 @@ def get_customer_ltv(
     region_cond = "(state = ? OR country = ?)" if filters.region else None
     region_params = [filters.region, filters.region] if filters.region else []
 
-    pairs = [
-        ("acquisition_channel = ?", filters.channel),
-        ("category_l1 = ?", filters.category),  # unused for customers — ignored below
-    ]
     # build standard conditions
     std_where, std_params = build_where([
         ("acquisition_channel = ?", filters.channel),

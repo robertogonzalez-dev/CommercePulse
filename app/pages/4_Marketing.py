@@ -34,7 +34,7 @@ if channel_df.empty:
 filtered = channel_df if channel is None else channel_df[channel_df["channel_name"] == channel]
 
 # ── KPIs ──────────────────────────────────────────────────────────────────────
-paid = filtered[filtered["is_paid"] == True]
+paid = filtered[filtered["is_paid"]]
 total_spend = float(paid["total_spend"].sum())
 avg_roas = float(paid["avg_roas"].mean()) if paid["avg_roas"].notna().any() else 0.0
 avg_cpa = float(paid["avg_cpa"].mean()) if paid["avg_cpa"].notna().any() else 0.0

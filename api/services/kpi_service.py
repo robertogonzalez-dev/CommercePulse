@@ -34,11 +34,11 @@ def get_kpi_summary(
         FROM reporting.mart_sales_summary
         {where}
     """
-    s = conn.execute(sales_sql, params).fetchone()
+    s = conn.execute(sales_sql, params).fetchone() or (0,) * 9
 
     cust = conn.execute(
         "SELECT COUNT(*), COUNT(*) FILTER (WHERE is_repeat_customer) FROM reporting.mart_customer_ltv"
-    ).fetchone()
+    ).fetchone() or (0, 0)
 
     top_ch = conn.execute(
         "SELECT channel_name FROM reporting.mart_channel_performance ORDER BY gross_revenue DESC LIMIT 1"

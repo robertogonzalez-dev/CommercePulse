@@ -10,7 +10,8 @@ router = APIRouter(tags=["health"])
 
 @router.get("/health", response_model=HealthResponse, summary="Service health check")
 def health(conn: duckdb.DuckDBPyConnection = Depends(get_db_conn)) -> HealthResponse:
-    version = conn.execute("SELECT version()").fetchone()[0]
+    row = conn.execute("SELECT version()").fetchone()
+    version = row[0] if row else "unknown"
     return HealthResponse(
         status="ok",
         database=version,

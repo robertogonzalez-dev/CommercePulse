@@ -1,5 +1,4 @@
 import datetime
-from typing import Optional
 
 import duckdb
 
@@ -9,8 +8,8 @@ from api.models.responses import KPISummary
 
 def get_kpi_summary(
     conn: duckdb.DuckDBPyConnection,
-    start_date: Optional[datetime.date] = None,
-    end_date: Optional[datetime.date] = None,
+    start_date: datetime.date | None = None,
+    end_date: datetime.date | None = None,
 ) -> KPISummary:
     where, params = build_where([
         ("date >= ?", start_date),

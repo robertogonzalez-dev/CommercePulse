@@ -1,5 +1,6 @@
 """Inventory risk page — stock-out risk, days of cover, and reorder alerts."""
 
+import plotly.express as px
 import streamlit as st
 
 import app.db as db
@@ -43,7 +44,6 @@ st.divider()
 
 # ── Stock status breakdown ────────────────────────────────────────────────────
 st.subheader("Stock Status Distribution")
-import plotly.express as px
 
 stock_counts = inv_df.groupby("stock_status", as_index=False).size().rename(
     columns={"size": "count"}

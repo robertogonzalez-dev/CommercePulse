@@ -1,5 +1,6 @@
 """Customer analytics page — LTV, RFM, and segment analysis."""
 
+import plotly.express as px
 import streamlit as st
 
 import app.db as db
@@ -52,7 +53,7 @@ st.divider()
 
 # ── Acquisition channel breakdown ─────────────────────────────────────────────
 st.subheader("Customers by Acquisition Channel")
-import plotly.express as px
+
 acq_df = (
     customer_df.groupby("acquisition_channel", as_index=False).agg(
         count=("customer_id", "count"),

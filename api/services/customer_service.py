@@ -12,9 +12,11 @@ def get_customer_ltv(
     region_params = [filters.region, filters.region] if filters.region else []
 
     # build standard conditions
-    std_where, std_params = build_where([
-        ("acquisition_channel = ?", filters.channel),
-    ])
+    std_where, std_params = build_where(
+        [
+            ("acquisition_channel = ?", filters.channel),
+        ]
+    )
 
     # combine region condition
     conditions = []

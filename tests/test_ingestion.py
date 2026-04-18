@@ -28,6 +28,7 @@ from ingestion.validator import add_row_hash, validate
 # Fixtures
 # ─────────────────────────────────────────────────────────────
 
+
 @pytest.fixture
 def sample_customer_df() -> pd.DataFrame:
     csv = """customer_id,first_name,last_name,email,phone,gender,date_of_birth,city,state,country,zip_code,acquisition_channel,registration_date,is_active
@@ -45,12 +46,20 @@ def customers_config() -> DatasetConfig:
 # Config loader tests
 # ─────────────────────────────────────────────────────────────
 
+
 class TestConfigLoader:
     def test_list_available_configs_returns_all_datasets(self):
         configs = list_available_configs()
         expected = {
-            "customers", "products", "orders", "order_items",
-            "payments", "refunds", "inventory", "marketing_spend", "web_sessions",
+            "customers",
+            "products",
+            "orders",
+            "order_items",
+            "payments",
+            "refunds",
+            "inventory",
+            "marketing_spend",
+            "web_sessions",
         }
         assert expected.issubset(set(configs)), f"Missing configs: {expected - set(configs)}"
 
@@ -79,6 +88,7 @@ class TestConfigLoader:
 # Validator tests
 # ─────────────────────────────────────────────────────────────
 
+
 class TestValidator:
     def test_valid_dataframe_passes(self, sample_customer_df, customers_config):
         result = validate(sample_customer_df, customers_config)
@@ -98,12 +108,16 @@ class TestValidator:
         assert any("zero rows" in e for e in result.errors)
 
     def test_duplicate_primary_key_warns(self, customers_config):
-        df = pd.DataFrame({
-            col: ["CUST-DUP", "CUST-DUP"] if col == "customer_id"
-            else ["a@b.com", "c@d.com"] if col == "email"
-            else ["val"] * 2
-            for col in customers_config.expected_columns
-        })
+        df = pd.DataFrame(
+            {
+                col: ["CUST-DUP", "CUST-DUP"]
+                if col == "customer_id"
+                else ["a@b.com", "c@d.com"]
+                if col == "email"
+                else ["val"] * 2
+                for col in customers_config.expected_columns
+            }
+        )
         result = validate(df, customers_config)
         assert any("duplicate" in w.lower() for w in result.warnings)
 
@@ -122,6 +136,7 @@ class TestValidator:
 # ─────────────────────────────────────────────────────────────
 # BaseLoader integration tests (in-memory DuckDB)
 # ─────────────────────────────────────────────────────────────
+
 
 class TestBaseLoader:
     """Uses a temp directory with a real DuckDB file for integration tests."""
@@ -144,6 +159,7 @@ class TestBaseLoader:
 
     def test_full_load_succeeds(self, temp_project: Path):
         from ingestion.warehouse import initialise_schema
+
         initialise_schema()
 
         config = load_config("customers")
@@ -156,6 +172,7 @@ class TestBaseLoader:
 
     def test_full_load_is_idempotent(self, temp_project: Path):
         from ingestion.warehouse import get_connection, initialise_schema
+
         initialise_schema()
 
         config = load_config("customers")
@@ -173,6 +190,7 @@ class TestBaseLoader:
 
     def test_audit_columns_are_present(self, temp_project: Path):
         from ingestion.warehouse import get_connection, initialise_schema
+
         initialise_schema()
 
         config = load_config("customers")
@@ -195,6 +213,7 @@ class TestBaseLoader:
 
     def test_ingestion_log_is_written(self, temp_project: Path):
         from ingestion.warehouse import get_connection, initialise_schema
+
         initialise_schema()
 
         config = load_config("customers")
@@ -214,6 +233,7 @@ class TestBaseLoader:
 
     def test_missing_source_file_produces_failed_result(self, temp_project: Path):
         from ingestion.warehouse import initialise_schema
+
         initialise_schema()
 
         config = load_config("customers")

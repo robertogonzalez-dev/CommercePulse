@@ -90,7 +90,9 @@ def run_pipeline(
     if datasets:
         unknown = set(datasets) - available
         if unknown:
-            raise ValueError(f"Unknown dataset(s): {sorted(unknown)}. Available: {sorted(available)}")
+            raise ValueError(
+                f"Unknown dataset(s): {sorted(unknown)}. Available: {sorted(available)}"
+            )
         run_list = [d for d in _LOAD_ORDER if d in set(datasets)]
         # Append any requested datasets not in the ordered list
         run_list += [d for d in datasets if d not in run_list]
@@ -119,7 +121,10 @@ def run_pipeline(
         icon = "✓" if res.status == "success" else "✗"
         logger.info(
             "  %s %-20s  status=%-8s  loaded=%-6d  duration=%.2fs",
-            icon, name, res.status, res.rows_loaded,
+            icon,
+            name,
+            res.status,
+            res.rows_loaded,
             res.duration_seconds or 0,
         )
         total_rows += res.rows_loaded
@@ -127,7 +132,9 @@ def run_pipeline(
     logger.info("-" * 60)
     logger.info(
         "Total: %d datasets | %d rows loaded | %d failed",
-        len(results), total_rows, len(failed),
+        len(results),
+        total_rows,
+        len(failed),
     )
     logger.info("=" * 60)
 
@@ -139,9 +146,7 @@ def run_pipeline(
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="CommercePulse Bronze Layer Ingestion Pipeline"
-    )
+    parser = argparse.ArgumentParser(description="CommercePulse Bronze Layer Ingestion Pipeline")
     parser.add_argument(
         "--datasets",
         nargs="+",

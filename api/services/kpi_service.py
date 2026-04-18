@@ -11,10 +11,12 @@ def get_kpi_summary(
     start_date: datetime.date | None = None,
     end_date: datetime.date | None = None,
 ) -> KPISummary:
-    where, params = build_where([
-        ("date >= ?", start_date),
-        ("date <= ?", end_date),
-    ])
+    where, params = build_where(
+        [
+            ("date >= ?", start_date),
+            ("date <= ?", end_date),
+        ]
+    )
 
     sales_sql = f"""
         SELECT

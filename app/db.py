@@ -27,6 +27,7 @@ def _q(sql: str, params: list | None = None) -> pd.DataFrame:
 
 # ── KPI Summary ───────────────────────────────────────────────────────────────
 
+
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_kpi_summary(
     start_date: datetime.date | None = None,
@@ -72,6 +73,7 @@ def get_kpi_summary(
 
 # ── Sales ─────────────────────────────────────────────────────────────────────
 
+
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_sales_trend(
     start_date: datetime.date | None = None,
@@ -93,6 +95,7 @@ def get_sales_trend(
 
 # ── Products ──────────────────────────────────────────────────────────────────
 
+
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_product_performance(category: str | None = None) -> pd.DataFrame:
     conditions, params = [], []
@@ -107,6 +110,7 @@ def get_product_performance(category: str | None = None) -> pd.DataFrame:
 
 
 # ── Customers ─────────────────────────────────────────────────────────────────
+
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_customer_ltv(
@@ -129,14 +133,14 @@ def get_customer_ltv(
 
 # ── Channels ──────────────────────────────────────────────────────────────────
 
+
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_channel_performance() -> pd.DataFrame:
-    return _q(
-        "SELECT * FROM reporting.mart_channel_performance ORDER BY gross_revenue DESC"
-    )
+    return _q("SELECT * FROM reporting.mart_channel_performance ORDER BY gross_revenue DESC")
 
 
 # ── Inventory ─────────────────────────────────────────────────────────────────
+
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_inventory_risk(
@@ -164,6 +168,7 @@ def get_inventory_risk(
 
 
 # ── Refunds ───────────────────────────────────────────────────────────────────
+
 
 @st.cache_data(ttl=settings.cache_ttl_seconds)
 def get_refund_analysis(
@@ -193,6 +198,7 @@ def get_refund_analysis(
 
 
 # ── Filter option lists ───────────────────────────────────────────────────────
+
 
 @st.cache_data(ttl=3600)
 def get_categories() -> list[str]:

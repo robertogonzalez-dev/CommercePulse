@@ -11,18 +11,10 @@ class ReportFilters:
         start_date: datetime.date | None = Query(
             None, description="Inclusive start date (YYYY-MM-DD)"
         ),
-        end_date: datetime.date | None = Query(
-            None, description="Inclusive end date (YYYY-MM-DD)"
-        ),
-        region: str | None = Query(
-            None, description="State or country filter"
-        ),
-        channel: str | None = Query(
-            None, description="Channel name (e.g. organic_search)"
-        ),
-        category: str | None = Query(
-            None, description="Product category L1"
-        ),
+        end_date: datetime.date | None = Query(None, description="Inclusive end date (YYYY-MM-DD)"),
+        region: str | None = Query(None, description="State or country filter"),
+        channel: str | None = Query(None, description="Channel name (e.g. organic_search)"),
+        category: str | None = Query(None, description="Product category L1"),
         limit: int = Query(100, ge=1, le=1000, description="Max rows"),
         offset: int = Query(0, ge=0, description="Pagination offset"),
     ) -> None:

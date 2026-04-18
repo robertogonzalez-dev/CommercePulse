@@ -38,8 +38,10 @@ if sales_df.empty:
 # ── Revenue trend ─────────────────────────────────────────────────────────────
 st.subheader("Revenue Trend")
 granularity = st.radio(
-    "View by", ["daily", "monthly", "quarterly"],
-    horizontal=True, key="rev_granularity",
+    "View by",
+    ["daily", "monthly", "quarterly"],
+    horizontal=True,
+    key="rev_granularity",
 )
 st.plotly_chart(charts.revenue_trend(sales_df, granularity), use_container_width=True)
 
@@ -55,17 +57,26 @@ with col1:
 with col2:
     st.subheader("Discount vs Refund Rate (%)")
     import plotly.graph_objects as go
+
     fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=sales_df["date"], y=sales_df["discount_rate_pct"],
-        mode="lines", name="Discount Rate",
-        line=dict(color="#ff7f0e", width=2),
-    ))
-    fig.add_trace(go.Scatter(
-        x=sales_df["date"], y=sales_df["refund_rate_pct"],
-        mode="lines", name="Refund Rate",
-        line=dict(color="#d62728", width=2),
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=sales_df["date"],
+            y=sales_df["discount_rate_pct"],
+            mode="lines",
+            name="Discount Rate",
+            line=dict(color="#ff7f0e", width=2),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=sales_df["date"],
+            y=sales_df["refund_rate_pct"],
+            mode="lines",
+            name="Refund Rate",
+            line=dict(color="#d62728", width=2),
+        )
+    )
     fig.update_layout(
         template="plotly_white",
         xaxis_title=None,
@@ -82,7 +93,8 @@ st.divider()
 # ── Monthly breakdown table ───────────────────────────────────────────────────
 st.subheader("Monthly Breakdown")
 monthly = (
-    sales_df.groupby("year_month", as_index=False).agg(
+    sales_df.groupby("year_month", as_index=False)
+    .agg(
         orders=("total_orders", "sum"),
         fulfilled=("fulfilled_orders", "sum"),
         gross=("gross_revenue", "sum"),
@@ -94,8 +106,14 @@ monthly = (
     .sort_values("year_month")
 )
 monthly.columns = [
-    "Month", "Orders", "Fulfilled", "Gross Revenue", "Net Revenue",
-    "Avg Order Value", "Refunds", "Refund Rate %",
+    "Month",
+    "Orders",
+    "Fulfilled",
+    "Gross Revenue",
+    "Net Revenue",
+    "Avg Order Value",
+    "Refunds",
+    "Refund Rate %",
 ]
 for col in ["Gross Revenue", "Net Revenue", "Avg Order Value", "Refunds"]:
     monthly[col] = monthly[col].map("${:,.2f}".format)

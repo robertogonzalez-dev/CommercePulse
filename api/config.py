@@ -4,9 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    db_path: Path = (
-        Path(__file__).parent.parent / "data" / "warehouse" / "commercepulse.duckdb"
-    )
+    db_path: Path = Path(__file__).parent.parent / "data" / "warehouse" / "commercepulse.duckdb"
     api_host: str = "0.0.0.0"
     api_port: int = 8000
     debug: bool = False

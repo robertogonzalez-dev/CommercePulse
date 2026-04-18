@@ -7,10 +7,15 @@ def get_inventory_risk(
     conn: duckdb.DuckDBPyConnection,
     filters: ReportFilters,
 ) -> list[dict]:
-    where, params = build_where([
-        ("category_l1 = ?", filters.category),
-        ("risk_level = ?", filters.region),  # risk_level exposed via region param for simplicity
-    ])
+    where, params = build_where(
+        [
+            ("category_l1 = ?", filters.category),
+            (
+                "risk_level = ?",
+                filters.region,
+            ),  # risk_level exposed via region param for simplicity
+        ]
+    )
 
     sql = f"""
         SELECT
@@ -53,10 +58,12 @@ def count_inventory(
     conn: duckdb.DuckDBPyConnection,
     filters: ReportFilters,
 ) -> int:
-    where, params = build_where([
-        ("category_l1 = ?", filters.category),
-        ("risk_level = ?", filters.region),
-    ])
+    where, params = build_where(
+        [
+            ("category_l1 = ?", filters.category),
+            ("risk_level = ?", filters.region),
+        ]
+    )
     row = conn.execute(
         f"SELECT COUNT(*) FROM reporting.mart_inventory_risk {where}", params
     ).fetchone()

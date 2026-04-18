@@ -19,7 +19,7 @@ class DatasetConfig:
     source_file: str
     target_schema: str
     target_table: str
-    load_type: str                     # full | incremental
+    load_type: str  # full | incremental
     primary_key: str
     watermark_column: str | None
     delimiter: str
@@ -46,9 +46,7 @@ def load_config(dataset: str) -> DatasetConfig:
     """Load and parse the YAML config for a named dataset."""
     config_path = _CONFIG_DIR / f"{dataset}.yaml"
     if not config_path.exists():
-        raise FileNotFoundError(
-            f"No config found for dataset '{dataset}' at {config_path}"
-        )
+        raise FileNotFoundError(f"No config found for dataset '{dataset}' at {config_path}")
 
     with config_path.open(encoding="utf-8") as fh:
         raw = yaml.safe_load(fh)

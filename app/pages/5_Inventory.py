@@ -45,8 +45,8 @@ st.divider()
 # ── Stock status breakdown ────────────────────────────────────────────────────
 st.subheader("Stock Status Distribution")
 
-stock_counts = inv_df.groupby("stock_status", as_index=False).size().rename(
-    columns={"size": "count"}
+stock_counts = (
+    inv_df.groupby("stock_status", as_index=False).size().rename(columns={"size": "count"})
 )
 color_map = {
     "in_stock": "#2ca02c",
@@ -54,9 +54,13 @@ color_map = {
     "out_of_stock": "#d62728",
 }
 fig = px.pie(
-    stock_counts, names="stock_status", values="count",
-    color="stock_status", color_discrete_map=color_map,
-    hole=0.5, template="plotly_white",
+    stock_counts,
+    names="stock_status",
+    values="count",
+    color="stock_status",
+    color_discrete_map=color_map,
+    hole=0.5,
+    template="plotly_white",
 )
 fig.update_traces(textposition="outside", textinfo="percent+label")
 fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=30, b=0))
@@ -68,7 +72,9 @@ with col2:
     cover_df = inv_df.dropna(subset=["days_of_cover"])
     if not cover_df.empty:
         fig2 = px.histogram(
-            cover_df, x="days_of_cover", nbins=20,
+            cover_df,
+            x="days_of_cover",
+            nbins=20,
             template="plotly_white",
             color_discrete_sequence=["#1f77b4"],
             labels={"days_of_cover": "Days of Cover"},
@@ -90,11 +96,21 @@ RISK_COLORS = {
     "low": "🟢",
 }
 
-display = inv_df[[
-    "risk_level", "product_name", "category_l1", "brand",
-    "warehouse_name", "stock_status", "quantity_available",
-    "days_of_cover", "at_risk_revenue", "units_sold_last_90d", "avg_daily_units",
-]].copy()
+display = inv_df[
+    [
+        "risk_level",
+        "product_name",
+        "category_l1",
+        "brand",
+        "warehouse_name",
+        "stock_status",
+        "quantity_available",
+        "days_of_cover",
+        "at_risk_revenue",
+        "units_sold_last_90d",
+        "avg_daily_units",
+    ]
+].copy()
 display["risk_level"] = display["risk_level"].map(
     lambda v: f"{RISK_COLORS.get(v, '')} {v}" if v else v
 )
@@ -106,8 +122,16 @@ display["avg_daily_units"] = display["avg_daily_units"].apply(
     lambda v: f"{v:.2f}" if v is not None else "0"
 )
 display.columns = [
-    "Risk", "Product", "Category", "Brand", "Warehouse",
-    "Status", "Qty Available", "Days Cover", "Revenue at Risk",
-    "Units/90d", "Daily Velocity",
+    "Risk",
+    "Product",
+    "Category",
+    "Brand",
+    "Warehouse",
+    "Status",
+    "Qty Available",
+    "Days Cover",
+    "Revenue at Risk",
+    "Units/90d",
+    "Daily Velocity",
 ]
 st.dataframe(display, use_container_width=True, hide_index=True)

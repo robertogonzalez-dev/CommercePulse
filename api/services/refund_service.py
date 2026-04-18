@@ -1,4 +1,3 @@
-
 import duckdb
 
 from api.models.common import ReportFilters, build_where
@@ -12,12 +11,14 @@ def get_refund_analysis(
     start_ym = filters.start_date.strftime("%Y-%m") if filters.start_date else None
     end_ym = filters.end_date.strftime("%Y-%m") if filters.end_date else None
 
-    where, params = build_where([
-        ("year_month >= ?", start_ym),
-        ("year_month <= ?", end_ym),
-        ("channel_name = ?", filters.channel),
-        ("category_l1 = ?", filters.category),
-    ])
+    where, params = build_where(
+        [
+            ("year_month >= ?", start_ym),
+            ("year_month <= ?", end_ym),
+            ("channel_name = ?", filters.channel),
+            ("category_l1 = ?", filters.category),
+        ]
+    )
 
     sql = f"""
         SELECT
@@ -50,12 +51,14 @@ def count_refunds(
 ) -> int:
     start_ym = filters.start_date.strftime("%Y-%m") if filters.start_date else None
     end_ym = filters.end_date.strftime("%Y-%m") if filters.end_date else None
-    where, params = build_where([
-        ("year_month >= ?", start_ym),
-        ("year_month <= ?", end_ym),
-        ("channel_name = ?", filters.channel),
-        ("category_l1 = ?", filters.category),
-    ])
+    where, params = build_where(
+        [
+            ("year_month >= ?", start_ym),
+            ("year_month <= ?", end_ym),
+            ("channel_name = ?", filters.channel),
+            ("category_l1 = ?", filters.category),
+        ]
+    )
     row = conn.execute(
         f"SELECT COUNT(*) FROM reporting.mart_refund_analysis {where}", params
     ).fetchone()

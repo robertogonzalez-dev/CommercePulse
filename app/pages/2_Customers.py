@@ -26,7 +26,11 @@ if customer_df.empty:
 
 # ── KPIs ──────────────────────────────────────────────────────────────────────
 total = len(customer_df)
-repeat = int(customer_df["is_repeat_customer"].sum()) if "is_repeat_customer" in customer_df.columns else 0
+repeat = (
+    int(customer_df["is_repeat_customer"].sum())
+    if "is_repeat_customer" in customer_df.columns
+    else 0
+)
 avg_clv = float(customer_df["historical_clv"].mean())
 avg_aov = float(customer_df["avg_order_value"].mean())
 top_seg = (
@@ -55,13 +59,17 @@ st.divider()
 st.subheader("Customers by Acquisition Channel")
 
 acq_df = (
-    customer_df.groupby("acquisition_channel", as_index=False).agg(
+    customer_df.groupby("acquisition_channel", as_index=False)
+    .agg(
         count=("customer_id", "count"),
         avg_clv=("historical_clv", "mean"),
-    ).sort_values("count", ascending=False)
+    )
+    .sort_values("count", ascending=False)
 )
 fig = px.bar(
-    acq_df, x="acquisition_channel", y="count",
+    acq_df,
+    x="acquisition_channel",
+    y="count",
     color="avg_clv",
     color_continuous_scale="Blues",
     template="plotly_white",
@@ -85,9 +93,19 @@ st.divider()
 # ── Top customers table ───────────────────────────────────────────────────────
 st.subheader("Top Customers by Lifetime Value")
 top = customer_df.head(20)[
-    ["full_name", "acquisition_channel", "age_band", "city", "country",
-     "customer_segment", "rfm_segment", "total_orders",
-     "historical_clv", "predicted_clv_2yr", "days_since_last_order"]
+    [
+        "full_name",
+        "acquisition_channel",
+        "age_band",
+        "city",
+        "country",
+        "customer_segment",
+        "rfm_segment",
+        "total_orders",
+        "historical_clv",
+        "predicted_clv_2yr",
+        "days_since_last_order",
+    ]
 ].copy()
 for col in ["historical_clv", "predicted_clv_2yr"]:
     top[col] = top[col].map("${:,.2f}".format)

@@ -26,7 +26,7 @@ An end-to-end e-commerce analytics warehouse built with Python, DuckDB, dbt, Fas
 | Bronze   | DuckDB          | Raw, immutable, audited tables           |
 | Silver   | dbt             | Cleaned, typed, deduplicated models      |
 | Gold     | dbt             | Star schema dimensions + facts + marts   |
-| API      | FastAPI         | Parameterised metric endpoints           |
+| API      | FastAPI         | Parameterized metric endpoints           |
 | App      | Streamlit       | Interactive analytics dashboard          |
 | Tests    | pytest + httpx  | Unit + integration test suite            |
 | CI       | GitHub Actions  | Lint, test, dbt compile on PR            |
@@ -81,15 +81,15 @@ Expected output:
 CommercePulse Ingestion Pipeline
 batch_id  : 3f7a1c2d-...
 ============================================================
-  ✓ customers          status=success   loaded=25    duration=0.12s
-  ✓ products           status=success   loaded=25    duration=0.08s
-  ✓ inventory          status=success   loaded=25    duration=0.07s
-  ✓ orders             status=success   loaded=30    duration=0.09s
-  ✓ order_items        status=success   loaded=43    duration=0.08s
-  ✓ payments           status=success   loaded=30    duration=0.08s
-  ✓ refunds            status=success   loaded=5     duration=0.06s
-  ✓ marketing_spend    status=success   loaded=12    duration=0.07s
-  ✓ web_sessions       status=success   loaded=30    duration=0.11s
+   customers          status=success   loaded=25    duration=0.12s
+   products           status=success   loaded=25    duration=0.08s
+   inventory          status=success   loaded=25    duration=0.07s
+   orders             status=success   loaded=30    duration=0.09s
+   order_items        status=success   loaded=43    duration=0.08s
+   payments           status=success   loaded=30    duration=0.08s
+   refunds            status=success   loaded=5     duration=0.06s
+   marketing_spend    status=success   loaded=12    duration=0.07s
+   web_sessions       status=success   loaded=30    duration=0.11s
 ------------------------------------------------------------
 Total: 9 datasets | 225 rows loaded | 0 failed
 ============================================================
@@ -152,7 +152,7 @@ Override `transform()` in a subclass for dataset-specific enrichment.
 
 ### Load types
 
-| Type | Behaviour |
+| Type | Behavior |
 |------|-----------|
 | `full` | Truncate-and-replace on every run |
 | `incremental` | Append only rows newer than the high-water mark |
@@ -225,13 +225,13 @@ make clean            Remove caches and logs
 
 | Phase | Status      | Description                    |
 |-------|-------------|--------------------------------|
-| 1     | ✅ Complete | Blueprint & data model design  |
-| 2     | ✅ Complete | Foundation & Bronze ingestion  |
-| 3     | 🔜 Next     | Silver dbt models              |
-| 4     | 🔜 Planned  | Gold dimensional models        |
-| 5     | 🔜 Planned  | FastAPI metric layer           |
-| 6     | 🔜 Planned  | Streamlit dashboard            |
-| 7     | 🔜 Planned  | CI/CD & documentation polish   |
+| 1     |  Complete | Blueprint & data model design  |
+| 2     |  Complete | Foundation & Bronze ingestion  |
+| 3     |  Next     | Silver dbt models              |
+| 4     |  Planned  | Gold dimensional models        |
+| 5     |  Planned  | FastAPI metric layer           |
+| 6     |  Planned  | Streamlit dashboard            |
+| 7     |  Planned  | CI/CD & documentation polish   |
 
 ---
 

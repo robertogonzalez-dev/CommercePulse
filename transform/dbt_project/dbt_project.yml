@@ -1,0 +1,44 @@
+name: "commercepulse"
+version: "1.0.0"
+config-version: 2
+
+profile: "commercepulse"
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  date_spine_start: "2023-01-01"
+  date_spine_end: "2027-12-31"
+
+models:
+  commercepulse:
+    staging:
+      +materialized: view
+      +schema: silver
+      +tags: ["silver", "staging"]
+
+    intermediate:
+      +materialized: view
+      +schema: silver
+      +tags: ["silver", "intermediate"]
+
+    marts:
+      core:
+        +materialized: table
+        +schema: gold
+        +tags: ["gold", "core"]
+
+      reporting:
+        +materialized: table
+        +schema: reporting
+        +tags: ["reporting", "mart"]

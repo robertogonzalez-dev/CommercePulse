@@ -2,7 +2,7 @@ dataset: order_items
 source_file: data/raw/order_items.csv
 target_schema: bronze
 target_table: raw_order_items
-load_type: incremental
+load_type: full
 primary_key: order_item_id
 watermark_column: null
 delimiter: ","

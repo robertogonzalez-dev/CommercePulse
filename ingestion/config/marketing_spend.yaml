@@ -1,0 +1,42 @@
+dataset: marketing_spend
+source_file: data/raw/marketing_spend.csv
+target_schema: bronze
+target_table: raw_marketing_spend
+load_type: full
+primary_key: spend_id
+watermark_column: start_date
+delimiter: ","
+encoding: utf-8
+expected_columns:
+  - spend_id
+  - campaign_id
+  - campaign_name
+  - channel
+  - start_date
+  - end_date
+  - budget
+  - amount_spent
+  - impressions
+  - clicks
+  - conversions
+  - revenue_attributed
+column_types:
+  spend_id: VARCHAR
+  campaign_id: VARCHAR
+  campaign_name: VARCHAR
+  channel: VARCHAR
+  start_date: DATE
+  end_date: DATE
+  budget: DECIMAL
+  amount_spent: DECIMAL
+  impressions: INTEGER
+  clicks: INTEGER
+  conversions: INTEGER
+  revenue_attributed: DECIMAL
+not_null_columns:
+  - spend_id
+  - campaign_id
+  - channel
+  - start_date
+unique_columns:
+  - spend_id

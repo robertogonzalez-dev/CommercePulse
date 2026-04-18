@@ -1,0 +1,36 @@
+dataset: refunds
+source_file: data/raw/refunds.csv
+target_schema: bronze
+target_table: raw_refunds
+load_type: incremental
+primary_key: refund_id
+watermark_column: refund_date
+delimiter: ","
+encoding: utf-8
+expected_columns:
+  - refund_id
+  - order_id
+  - order_item_id
+  - customer_id
+  - refund_date
+  - refund_reason
+  - refund_amount
+  - refund_status
+  - refund_method
+column_types:
+  refund_id: VARCHAR
+  order_id: VARCHAR
+  order_item_id: VARCHAR
+  customer_id: VARCHAR
+  refund_date: DATE
+  refund_reason: VARCHAR
+  refund_amount: DECIMAL
+  refund_status: VARCHAR
+  refund_method: VARCHAR
+not_null_columns:
+  - refund_id
+  - order_id
+  - customer_id
+  - refund_date
+unique_columns:
+  - refund_id

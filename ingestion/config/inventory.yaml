@@ -1,0 +1,37 @@
+dataset: inventory
+source_file: data/raw/inventory.csv
+target_schema: bronze
+target_table: raw_inventory
+load_type: full
+primary_key: inventory_id
+watermark_column: last_updated
+delimiter: ","
+encoding: utf-8
+expected_columns:
+  - inventory_id
+  - product_id
+  - warehouse_id
+  - warehouse_name
+  - quantity_on_hand
+  - quantity_reserved
+  - quantity_available
+  - reorder_level
+  - reorder_quantity
+  - last_updated
+column_types:
+  inventory_id: VARCHAR
+  product_id: VARCHAR
+  warehouse_id: VARCHAR
+  warehouse_name: VARCHAR
+  quantity_on_hand: INTEGER
+  quantity_reserved: INTEGER
+  quantity_available: INTEGER
+  reorder_level: INTEGER
+  reorder_quantity: INTEGER
+  last_updated: DATE
+not_null_columns:
+  - inventory_id
+  - product_id
+  - warehouse_id
+unique_columns:
+  - inventory_id

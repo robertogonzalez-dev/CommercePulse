@@ -1,0 +1,26 @@
+customer_id,first_name,last_name,email,phone,gender,date_of_birth,city,state,country,zip_code,acquisition_channel,registration_date,is_active
+CUST-0001,James,Harrington,james.harrington@email.com,+1-555-0101,M,1988-03-15,Austin,TX,US,78701,organic_search,2022-01-05,true
+CUST-0002,Sofia,Mendes,sofia.mendes@email.com,+1-555-0102,F,1994-07-22,Miami,FL,US,33101,paid_social,2022-01-08,true
+CUST-0003,Derek,Patel,derek.patel@email.com,+1-555-0103,M,1991-11-03,Chicago,IL,US,60601,email,2022-01-12,true
+CUST-0004,Amara,Johnson,amara.johnson@email.com,+1-555-0104,F,1986-05-18,Seattle,WA,US,98101,organic_search,2022-01-14,true
+CUST-0005,Lucas,Chen,lucas.chen@email.com,+1-555-0105,M,1999-09-30,San Francisco,CA,US,94101,direct,2022-01-17,true
+CUST-0006,Priya,Sharma,priya.sharma@email.com,+1-555-0106,F,1993-02-14,New York,NY,US,10001,paid_search,2022-01-20,true
+CUST-0007,Marcus,Williams,marcus.williams@email.com,+1-555-0107,M,1985-08-27,Houston,TX,US,77001,referral,2022-01-23,false
+CUST-0008,Elena,Rodriguez,elena.rodriguez@email.com,+1-555-0108,F,1997-04-06,Los Angeles,CA,US,90001,paid_social,2022-01-25,true
+CUST-0009,Tyler,Brooks,tyler.brooks@email.com,+1-555-0109,M,1990-12-19,Denver,CO,US,80201,organic_search,2022-02-02,true
+CUST-0010,Nadia,Kim,nadia.kim@email.com,+1-555-0110,F,1996-06-11,Portland,OR,US,97201,email,2022-02-05,true
+CUST-0011,Ethan,Mitchell,ethan.mitchell@email.com,+1-555-0111,M,1984-01-29,Phoenix,AZ,US,85001,organic_search,2022-02-09,true
+CUST-0012,Isabelle,Dupont,isabelle.dupont@email.com,+1-555-0112,F,1992-10-07,Boston,MA,US,02101,referral,2022-02-11,true
+CUST-0013,Samuel,Okonkwo,samuel.okonkwo@email.com,+1-555-0113,M,1989-07-15,Atlanta,GA,US,30301,paid_search,2022-02-15,true
+CUST-0014,Chloe,Anderson,chloe.anderson@email.com,+1-555-0114,F,1998-03-22,Nashville,TN,US,37201,direct,2022-02-18,true
+CUST-0015,Ryan,Thompson,ryan.thompson@email.com,+1-555-0115,M,1987-09-08,Charlotte,NC,US,28201,organic_search,2022-02-21,true
+CUST-0016,Fatima,Hassan,fatima.hassan@email.com,+1-555-0116,F,1995-05-30,Detroit,MI,US,48201,email,2022-02-24,false
+CUST-0017,Jordan,Lee,jordan.lee@email.com,+1-555-0117,M,1993-11-17,Las Vegas,NV,US,89101,paid_social,2022-03-01,true
+CUST-0018,Maya,Nguyen,maya.nguyen@email.com,+1-555-0118,F,1991-08-04,Minneapolis,MN,US,55401,referral,2022-03-05,true
+CUST-0019,Alex,Kowalski,alex.kowalski@email.com,+1-555-0119,M,1988-02-26,Philadelphia,PA,US,19101,organic_search,2022-03-08,true
+CUST-0020,Bianca,Ferreira,bianca.ferreira@email.com,+1-555-0120,F,1996-12-13,San Diego,CA,US,92101,paid_search,2022-03-12,true
+CUST-0021,Owen,Murphy,owen.murphy@email.com,+1-555-0121,M,1983-04-20,Columbus,OH,US,43201,direct,2022-03-15,true
+CUST-0022,Zara,Jackson,zara.jackson@email.com,+1-555-0122,F,1997-10-09,Indianapolis,IN,US,46201,organic_search,2022-03-19,true
+CUST-0023,Kevin,Tran,kevin.tran@email.com,+1-555-0123,M,1990-06-28,San Antonio,TX,US,78201,email,2022-03-22,true
+CUST-0024,Leila,Ahmadi,leila.ahmadi@email.com,+1-555-0124,F,1994-01-16,Baltimore,MD,US,21201,paid_social,2022-03-25,true
+CUST-0025,Aaron,Stewart,aaron.stewart@email.com,+1-555-0125,M,1986-07-03,Louisville,KY,US,40201,referral,2022-03-29,true

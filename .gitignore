@@ -1,0 +1,40 @@
+# ── Python ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+.env
+
+# ── Data & Warehouse ──────────────────────────────────────────
+# Seed CSVs in data/raw/ ARE tracked (demo dataset for the portfolio).
+# Exclude the generated warehouse DB and log files.
+data/warehouse/
+logs/
+*.duckdb
+*.duckdb.wal
+
+# ── Testing ───────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# ── Type checking ─────────────────────────────────────────────
+.mypy_cache/
+
+# ── Editors ───────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

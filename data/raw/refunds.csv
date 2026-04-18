@@ -1,0 +1,6 @@
+refund_id,order_id,order_item_id,customer_id,refund_date,refund_reason,refund_amount,refund_status,refund_method
+REF-0001,ORD-10011,OI-00015,CUST-0012,2023-01-25,defective_product,89.99,approved,original_payment
+REF-0002,ORD-10005,OI-00007,CUST-0008,2023-01-09,order_cancelled,105.98,approved,original_payment
+REF-0003,ORD-10024,OI-00034,CUST-0023,2023-02-15,wrong_item_received,116.49,approved,store_credit
+REF-0004,ORD-10019,OI-00027,CUST-0020,2023-01-27,order_cancelled,125.98,approved,original_payment
+REF-0005,ORD-10011,OI-00015,CUST-0012,2023-02-01,return_accepted,0.00,shipping_label_sent,original_payment

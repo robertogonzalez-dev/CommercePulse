@@ -1,0 +1,46 @@
+dataset: customers
+source_file: data/raw/customers.csv
+target_schema: bronze
+target_table: raw_customers
+load_type: full  # full | incremental
+primary_key: customer_id
+watermark_column: registration_date
+delimiter: ","
+encoding: utf-8
+expected_columns:
+  - customer_id
+  - first_name
+  - last_name
+  - email
+  - phone
+  - gender
+  - date_of_birth
+  - city
+  - state
+  - country
+  - zip_code
+  - acquisition_channel
+  - registration_date
+  - is_active
+column_types:
+  customer_id: VARCHAR
+  first_name: VARCHAR
+  last_name: VARCHAR
+  email: VARCHAR
+  phone: VARCHAR
+  gender: VARCHAR
+  date_of_birth: DATE
+  city: VARCHAR
+  state: VARCHAR
+  country: VARCHAR
+  zip_code: VARCHAR
+  acquisition_channel: VARCHAR
+  registration_date: TIMESTAMP
+  is_active: BOOLEAN
+not_null_columns:
+  - customer_id
+  - email
+  - registration_date
+unique_columns:
+  - customer_id
+  - email

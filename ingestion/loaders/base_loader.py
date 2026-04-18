@@ -104,9 +104,7 @@ class BaseLoader:
             validation = validate(df, self.config)
             result.rows_rejected = validation.rows_rejected
             if not validation.passed:
-                raise ValueError(
-                    f"Validation failed: {'; '.join(validation.errors)}"
-                )
+                raise ValueError(f"Validation failed: {'; '.join(validation.errors)}")
 
             df = self.transform(df)
             df = self._filter_incremental(df)
@@ -138,7 +136,7 @@ class BaseLoader:
             source_path,
             delimiter=self.config.delimiter,
             encoding=self.config.encoding,
-            dtype=str,          # read everything as str; typing happens in DuckDB
+            dtype=str,  # read everything as str; typing happens in DuckDB
             keep_default_na=False,
             na_values=["", "NULL", "null", "N/A", "n/a"],
         )
@@ -201,7 +199,10 @@ class BaseLoader:
         df = df[df[wm_col] > max_wm_ts].copy()
         logger.info(
             "[%s] Incremental filter: %d → %d rows (watermark > %s)",
-            self.config.dataset, before, len(df), max_wm,
+            self.config.dataset,
+            before,
+            len(df),
+            max_wm,
         )
         return df
 
@@ -222,7 +223,10 @@ class BaseLoader:
                 last_exc = exc
                 logger.warning(
                     "[%s] Write attempt %d/%d failed: %s",
-                    self.config.dataset, attempt, _MAX_RETRIES, exc,
+                    self.config.dataset,
+                    attempt,
+                    _MAX_RETRIES,
+                    exc,
                 )
                 if attempt < _MAX_RETRIES:
                     time.sleep(_RETRY_DELAY_SECONDS * attempt)
@@ -242,13 +246,9 @@ class BaseLoader:
 
             # BY NAME matches DataFrame columns to DDL columns by name,
             # not by position — immune to column ordering differences.
-            conn.execute(
-                f'INSERT INTO "{schema}"."{table}" BY NAME SELECT * FROM df'
-            )
+            conn.execute(f'INSERT INTO "{schema}"."{table}" BY NAME SELECT * FROM df')
 
-        logger.info(
-            "[%s] Wrote %d rows → %s.%s", self.config.dataset, len(df), schema, table
-        )
+        logger.info("[%s] Wrote %d rows → %s.%s", self.config.dataset, len(df), schema, table)
         return len(df)
 
     # ──────────────────────────────────────────────────────────
@@ -275,9 +275,7 @@ class BaseLoader:
             }
             log_df = pd.DataFrame([log_row])  # noqa: F841 — referenced by DuckDB query
             with managed_connection() as conn:
-                conn.execute(
-                    "INSERT INTO bronze.ingestion_log SELECT * FROM log_df"
-                )
+                conn.execute("INSERT INTO bronze.ingestion_log SELECT * FROM log_df")
         except Exception as exc:
             logger.warning("Failed to write ingestion log: %s", exc)
 
@@ -286,6 +284,7 @@ class BaseLoader:
 # Factory function — eliminates the need for dataset-specific
 # subclasses unless custom transform logic is needed.
 # ──────────────────────────────────────────────────────────────
+
 
 def make_loader(
     dataset: str,

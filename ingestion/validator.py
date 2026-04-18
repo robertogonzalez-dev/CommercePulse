@@ -62,8 +62,7 @@ def validate(df: pd.DataFrame, config: DatasetConfig) -> ValidationResult:
         null_count = df[col].isna().sum()
         if null_count > 0:
             result.add_warning(
-                f"Column '{col}' has {null_count} null value(s) — "
-                f"expected not-null per config."
+                f"Column '{col}' has {null_count} null value(s) — expected not-null per config."
             )
 
     # 3. Uniqueness checks (warn only — dedup happens in loader)
@@ -72,18 +71,14 @@ def validate(df: pd.DataFrame, config: DatasetConfig) -> ValidationResult:
             continue
         dup_count = df[col].dropna().duplicated().sum()
         if dup_count > 0:
-            result.add_warning(
-                f"Column '{col}' has {dup_count} duplicate value(s) in source file."
-            )
+            result.add_warning(f"Column '{col}' has {dup_count} duplicate value(s) in source file.")
 
     # 4. Row count sanity
     if len(df) == 0:
         result.add_error("Source file contains zero rows after parsing.")
 
     if result.errors:
-        logger.error(
-            "[%s] Validation FAILED — %s", config.dataset, result.summary()
-        )
+        logger.error("[%s] Validation FAILED — %s", config.dataset, result.summary())
         for err in result.errors:
             logger.error("  ERROR: %s", err)
     for warn in result.warnings:

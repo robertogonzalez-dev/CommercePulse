@@ -95,20 +95,28 @@ if not product_df.empty:
 
     with st.expander("View full product table"):
         show_cols = [
-            "product_name", "category_l1", "brand", "price_tier",
-            "units_sold", "net_revenue", "realized_margin_pct", "current_stock_status",
+            "product_name",
+            "category_l1",
+            "brand",
+            "price_tier",
+            "units_sold",
+            "net_revenue",
+            "realized_margin_pct",
+            "current_stock_status",
         ]
         st.dataframe(
-            product_df[show_cols].rename(columns={
-                "product_name": "Product",
-                "category_l1": "Category",
-                "brand": "Brand",
-                "price_tier": "Tier",
-                "units_sold": "Units",
-                "net_revenue": "Net Revenue",
-                "realized_margin_pct": "Margin %",
-                "current_stock_status": "Stock",
-            }),
+            product_df[show_cols].rename(
+                columns={
+                    "product_name": "Product",
+                    "category_l1": "Category",
+                    "brand": "Brand",
+                    "price_tier": "Tier",
+                    "units_sold": "Units",
+                    "net_revenue": "Net Revenue",
+                    "realized_margin_pct": "Margin %",
+                    "current_stock_status": "Stock",
+                }
+            ),
             use_container_width=True,
             hide_index=True,
         )

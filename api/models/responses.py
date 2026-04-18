@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 # ── Health ────────────────────────────────────────────────────────────────────
 
+
 class HealthResponse(BaseModel):
     status: str
     database: str
@@ -12,6 +13,7 @@ class HealthResponse(BaseModel):
 
 
 # ── KPIs ──────────────────────────────────────────────────────────────────────
+
 
 class KPISummary(BaseModel):
     total_orders: int
@@ -31,6 +33,7 @@ class KPISummary(BaseModel):
 
 
 # ── Sales Trend ───────────────────────────────────────────────────────────────
+
 
 class SalesTrendRow(BaseModel):
     date: datetime.date
@@ -52,6 +55,7 @@ class SalesTrendRow(BaseModel):
 
 # ── Products ──────────────────────────────────────────────────────────────────
 
+
 class TopProductRow(BaseModel):
     product_id: str
     product_name: str
@@ -70,6 +74,7 @@ class TopProductRow(BaseModel):
 
 
 # ── Customers ─────────────────────────────────────────────────────────────────
+
 
 class CustomerLTVRow(BaseModel):
     customer_id: str
@@ -95,6 +100,7 @@ class CustomerLTVRow(BaseModel):
 
 
 # ── Channels ──────────────────────────────────────────────────────────────────
+
 
 class ChannelPerformanceRow(BaseModel):
     channel_name: str
@@ -124,6 +130,7 @@ class ChannelPerformanceRow(BaseModel):
 
 # ── Refunds ───────────────────────────────────────────────────────────────────
 
+
 class RefundRow(BaseModel):
     year_month: str
     year: int
@@ -139,6 +146,7 @@ class RefundRow(BaseModel):
 
 
 # ── Inventory ─────────────────────────────────────────────────────────────────
+
 
 class InventoryRiskRow(BaseModel):
     product_id: str
@@ -160,6 +168,7 @@ class InventoryRiskRow(BaseModel):
 
 
 # ── Pagination wrapper ────────────────────────────────────────────────────────
+
 
 class PagedResponse(BaseModel):
     data: list[Any]

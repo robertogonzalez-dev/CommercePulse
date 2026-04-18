@@ -90,9 +90,7 @@ def get_max_watermark(
     if not table_exists(conn, schema, table):
         return None
     try:
-        result = conn.execute(
-            f'SELECT MAX("{watermark_col}") FROM "{schema}"."{table}"'
-        ).fetchone()
+        result = conn.execute(f'SELECT MAX("{watermark_col}") FROM "{schema}"."{table}"').fetchone()
         return result[0] if result is not None else None
     except Exception:
         return None

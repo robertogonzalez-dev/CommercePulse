@@ -39,7 +39,8 @@ col2.metric("Total Units Sold", f"{int(product_df['units_sold'].sum()):,}")
 col3.metric(
     "Avg Realized Margin",
     f"{product_df['realized_margin_pct'].mean():.1f}%"
-    if product_df["realized_margin_pct"].notna().any() else "—",
+    if product_df["realized_margin_pct"].notna().any()
+    else "—",
 )
 top_cat = product_df.groupby("category_l1")["net_revenue"].sum().idxmax()
 col4.metric("Top Category", top_cat)
@@ -68,11 +69,21 @@ st.divider()
 
 # ── Product table ─────────────────────────────────────────────────────────────
 st.subheader("Full Product Table")
-display = product_df[[
-    "product_name", "category_l1", "category_l2", "brand", "price_tier",
-    "units_sold", "net_revenue", "total_contribution_margin",
-    "realized_margin_pct", "refund_rate_pct", "current_stock_status",
-]].copy()
+display = product_df[
+    [
+        "product_name",
+        "category_l1",
+        "category_l2",
+        "brand",
+        "price_tier",
+        "units_sold",
+        "net_revenue",
+        "total_contribution_margin",
+        "realized_margin_pct",
+        "refund_rate_pct",
+        "current_stock_status",
+    ]
+].copy()
 display["net_revenue"] = display["net_revenue"].map("${:,.2f}".format)
 display["total_contribution_margin"] = display["total_contribution_margin"].map("${:,.2f}".format)
 display["realized_margin_pct"] = display["realized_margin_pct"].apply(
@@ -82,7 +93,16 @@ display["refund_rate_pct"] = display["refund_rate_pct"].apply(
     lambda v: f"{v:.1f}%" if v is not None and str(v) != "nan" else "—"
 )
 display.columns = [
-    "Product", "Category", "Sub-category", "Brand", "Tier",
-    "Units", "Net Revenue", "Contribution Margin", "Margin %", "Refund Rate %", "Stock",
+    "Product",
+    "Category",
+    "Sub-category",
+    "Brand",
+    "Tier",
+    "Units",
+    "Net Revenue",
+    "Contribution Margin",
+    "Margin %",
+    "Refund Rate %",
+    "Stock",
 ]
 st.dataframe(display, use_container_width=True, hide_index=True)

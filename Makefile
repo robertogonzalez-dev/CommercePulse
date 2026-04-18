@@ -1,6 +1,8 @@
 .PHONY: help install ingest ingest-dataset ingest-debug list-datasets \
         transform transform-test transform-docs \
-        api app test lint typecheck clean
+        api app test lint typecheck clean \
+        docker-build docker-up docker-down docker-pipeline docker-logs \
+        schedule
 
 PYTHON   := python
 PYTEST   := pytest
@@ -10,8 +12,8 @@ DATASET  ?= orders
 # ── Help ──────────────────────────────────────────────────────────────────────
 help:
 	@echo ""
-	@echo "CommercePulse — Makefile targets"
-	@echo "────────────────────────────────────────────────────────"
+	@echo "CommercePulse -- Makefile targets"
+	@echo "------------------------------------------------------------"
 	@echo "  Setup"
 	@echo "    install            Install all Python dependencies"
 	@echo ""
@@ -21,23 +23,33 @@ help:
 	@echo "    ingest-debug       Run full pipeline with DEBUG logging"
 	@echo "    list-datasets      List all available datasets"
 	@echo ""
-	@echo "  Transform (dbt — Silver & Gold layers)"
+	@echo "  Transform (dbt -- Silver & Gold layers)"
 	@echo "    transform          Run all dbt models"
 	@echo "    transform-test     Run dbt model tests"
 	@echo "    transform-docs     Generate and serve dbt docs (localhost:8080)"
 	@echo ""
-	@echo "  Serve"
+	@echo "  Serve (local)"
 	@echo "    api                Start FastAPI server  (http://localhost:8000)"
 	@echo "    app                Start Streamlit app   (http://localhost:8501)"
+	@echo ""
+	@echo "  Docker"
+	@echo "    docker-build       Build all Docker images"
+	@echo "    docker-up          Run full stack (pipeline -> api -> streamlit)"
+	@echo "    docker-down        Stop and remove containers"
+	@echo "    docker-pipeline    Re-run pipeline container only"
+	@echo "    docker-logs        Tail logs from all running containers"
 	@echo ""
 	@echo "  Quality"
 	@echo "    test               Run pytest suite"
 	@echo "    lint               Run ruff linter + formatter check"
 	@echo "    typecheck          Run mypy type checker"
 	@echo ""
+	@echo "  Automation"
+	@echo "    schedule           Start daily pipeline scheduler (02:00 UTC)"
+	@echo ""
 	@echo "  Housekeeping"
 	@echo "    clean              Remove caches, logs, and build artefacts"
-	@echo "────────────────────────────────────────────────────────"
+	@echo "------------------------------------------------------------"
 	@echo ""
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
@@ -68,12 +80,28 @@ transform-docs:
 	cd transform/dbt_project && $(DBT) docs generate --profiles-dir .
 	cd transform/dbt_project && $(DBT) docs serve --profiles-dir .
 
-# ── Serve ─────────────────────────────────────────────────────────────────────
+# ── Serve (local) ─────────────────────────────────────────────────────────────
 api:
 	$(PYTHON) -m uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
 app:
 	$(PYTHON) -m streamlit run app/main.py
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+docker-build:
+	docker compose build
+
+docker-up:
+	docker compose up
+
+docker-down:
+	docker compose down
+
+docker-pipeline:
+	docker compose run --rm pipeline
+
+docker-logs:
+	docker compose logs -f
 
 # ── Quality ───────────────────────────────────────────────────────────────────
 test:
@@ -84,6 +112,10 @@ lint:
 
 typecheck:
 	mypy ingestion/ api/ --ignore-missing-imports
+
+# ── Automation ────────────────────────────────────────────────────────────────
+schedule:
+	$(PYTHON) -m ingestion.scheduler
 
 # ── Housekeeping ──────────────────────────────────────────────────────────────
 clean:

@@ -31,19 +31,21 @@ class WebSessionsLoader(BaseLoader):
         df["session_end"] = pd.to_datetime(df["session_end"], errors="coerce")
 
         df["session_duration_seconds"] = (
-            (df["session_end"] - df["session_start"])
-            .dt.total_seconds()
-            .clip(lower=0)
+            (df["session_end"] - df["session_start"]).dt.total_seconds().clip(lower=0)
         )
 
         # Convert back to ISO strings for DuckDB TIMESTAMP columns.
         # Replace pandas NaT with None so DuckDB receives NULL, not the
         # literal string "NaT" which fails TIMESTAMP parsing.
-        df["session_start"] = df["session_start"].dt.strftime("%Y-%m-%d %H:%M:%S").where(
-            df["session_start"].notna(), other=None
+        df["session_start"] = (
+            df["session_start"]
+            .dt.strftime("%Y-%m-%d %H:%M:%S")
+            .where(df["session_start"].notna(), other=None)
         )
-        df["session_end"] = df["session_end"].dt.strftime("%Y-%m-%d %H:%M:%S").where(
-            df["session_end"].notna(), other=None
+        df["session_end"] = (
+            df["session_end"]
+            .dt.strftime("%Y-%m-%d %H:%M:%S")
+            .where(df["session_end"].notna(), other=None)
         )
 
         return super().transform(df)

@@ -1,4 +1,3 @@
-
 import duckdb
 
 from api.models.common import ReportFilters, build_where
@@ -8,10 +7,12 @@ def get_sales_trend(
     conn: duckdb.DuckDBPyConnection,
     filters: ReportFilters,
 ) -> list[dict]:
-    where, params = build_where([
-        ("date >= ?", filters.start_date),
-        ("date <= ?", filters.end_date),
-    ])
+    where, params = build_where(
+        [
+            ("date >= ?", filters.start_date),
+            ("date <= ?", filters.end_date),
+        ]
+    )
 
     sql = f"""
         SELECT
@@ -46,10 +47,12 @@ def count_sales_trend(
     conn: duckdb.DuckDBPyConnection,
     filters: ReportFilters,
 ) -> int:
-    where, params = build_where([
-        ("date >= ?", filters.start_date),
-        ("date <= ?", filters.end_date),
-    ])
+    where, params = build_where(
+        [
+            ("date >= ?", filters.start_date),
+            ("date <= ?", filters.end_date),
+        ]
+    )
     row = conn.execute(
         f"SELECT COUNT(*) FROM reporting.mart_sales_summary {where}", params
     ).fetchone()

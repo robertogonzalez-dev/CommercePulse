@@ -43,45 +43,53 @@ def kpi_row(metrics: list[dict]) -> None:
 
 
 def revenue_kpis(kpis: dict) -> None:
-    kpi_row([
-        {"label": "Net Revenue", "value": _fmt_currency(kpis.get("total_net_revenue"))},
-        {"label": "Gross Revenue", "value": _fmt_currency(kpis.get("total_gross_revenue"))},
-        {"label": "Avg Order Value", "value": _fmt_currency(kpis.get("avg_order_value"))},
-        {"label": "Total Discounts", "value": _fmt_currency(kpis.get("total_discounts"))},
-        {"label": "Refunds", "value": _fmt_currency(kpis.get("total_refunded"))},
-    ])
+    kpi_row(
+        [
+            {"label": "Net Revenue", "value": _fmt_currency(kpis.get("total_net_revenue"))},
+            {"label": "Gross Revenue", "value": _fmt_currency(kpis.get("total_gross_revenue"))},
+            {"label": "Avg Order Value", "value": _fmt_currency(kpis.get("avg_order_value"))},
+            {"label": "Total Discounts", "value": _fmt_currency(kpis.get("total_discounts"))},
+            {"label": "Refunds", "value": _fmt_currency(kpis.get("total_refunded"))},
+        ]
+    )
 
 
 def orders_kpis(kpis: dict) -> None:
     total = kpis.get("total_orders") or 1
     fulfilled = kpis.get("fulfilled_orders", 0)
     cancelled = kpis.get("cancelled_orders", 0)
-    kpi_row([
-        {"label": "Total Orders", "value": _fmt_number(kpis.get("total_orders"))},
-        {"label": "Fulfilled", "value": _fmt_number(fulfilled)},
-        {
-            "label": "Fulfillment Rate",
-            "value": _fmt_pct(fulfilled / total * 100),
-            "delta_color": "normal",
-        },
-        {"label": "Cancelled", "value": _fmt_number(cancelled)},
-        {
-            "label": "Refund Rate",
-            "value": _fmt_pct(kpis.get("avg_refund_rate_pct")),
-            "delta_color": "inverse",
-        },
-    ])
+    kpi_row(
+        [
+            {"label": "Total Orders", "value": _fmt_number(kpis.get("total_orders"))},
+            {"label": "Fulfilled", "value": _fmt_number(fulfilled)},
+            {
+                "label": "Fulfillment Rate",
+                "value": _fmt_pct(fulfilled / total * 100),
+                "delta_color": "normal",
+            },
+            {"label": "Cancelled", "value": _fmt_number(cancelled)},
+            {
+                "label": "Refund Rate",
+                "value": _fmt_pct(kpis.get("avg_refund_rate_pct")),
+                "delta_color": "inverse",
+            },
+        ]
+    )
 
 
-def customer_kpis(total: int, repeat: int, avg_clv: float, avg_aov: float, top_segment: str) -> None:
+def customer_kpis(
+    total: int, repeat: int, avg_clv: float, avg_aov: float, top_segment: str
+) -> None:
     repeat_rate = (repeat / total * 100) if total else 0
-    kpi_row([
-        {"label": "Total Customers", "value": _fmt_number(total)},
-        {"label": "Repeat Customers", "value": _fmt_number(repeat)},
-        {"label": "Repeat Rate", "value": _fmt_pct(repeat_rate)},
-        {"label": "Avg LTV", "value": _fmt_currency(avg_clv)},
-        {"label": "Top RFM Segment", "value": top_segment or "—"},
-    ])
+    kpi_row(
+        [
+            {"label": "Total Customers", "value": _fmt_number(total)},
+            {"label": "Repeat Customers", "value": _fmt_number(repeat)},
+            {"label": "Repeat Rate", "value": _fmt_pct(repeat_rate)},
+            {"label": "Avg LTV", "value": _fmt_currency(avg_clv)},
+            {"label": "Top RFM Segment", "value": top_segment or "—"},
+        ]
+    )
 
 
 def inventory_kpis(df) -> None:
@@ -92,10 +100,12 @@ def inventory_kpis(df) -> None:
     out_of_stock = int((df["stock_status"] == "out_of_stock").sum())
     at_risk = float(df["at_risk_revenue"].sum())
     avg_cover = df["days_of_cover"].dropna().mean()
-    kpi_row([
-        {"label": "Critical SKUs", "value": _fmt_number(critical), "delta_color": "inverse"},
-        {"label": "Out of Stock", "value": _fmt_number(out_of_stock), "delta_color": "inverse"},
-        {"label": "Revenue at Risk", "value": _fmt_currency(at_risk), "delta_color": "inverse"},
-        {"label": "Avg Days of Cover", "value": _fmt_number(avg_cover, 1)},
-        {"label": "Total SKUs", "value": _fmt_number(len(df))},
-    ])
+    kpi_row(
+        [
+            {"label": "Critical SKUs", "value": _fmt_number(critical), "delta_color": "inverse"},
+            {"label": "Out of Stock", "value": _fmt_number(out_of_stock), "delta_color": "inverse"},
+            {"label": "Revenue at Risk", "value": _fmt_currency(at_risk), "delta_color": "inverse"},
+            {"label": "Avg Days of Cover", "value": _fmt_number(avg_cover, 1)},
+            {"label": "Total SKUs", "value": _fmt_number(len(df))},
+        ]
+    )

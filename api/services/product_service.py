@@ -7,9 +7,11 @@ def get_top_products(
     conn: duckdb.DuckDBPyConnection,
     filters: ReportFilters,
 ) -> list[dict]:
-    where, params = build_where([
-        ("category_l1 = ?", filters.category),
-    ])
+    where, params = build_where(
+        [
+            ("category_l1 = ?", filters.category),
+        ]
+    )
 
     sql = f"""
         SELECT

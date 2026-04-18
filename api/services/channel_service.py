@@ -7,9 +7,11 @@ def get_channel_performance(
     conn: duckdb.DuckDBPyConnection,
     filters: ReportFilters,
 ) -> list[dict]:
-    where, params = build_where([
-        ("channel_name = ?", filters.channel),
-    ])
+    where, params = build_where(
+        [
+            ("channel_name = ?", filters.channel),
+        ]
+    )
 
     sql = f"""
         SELECT

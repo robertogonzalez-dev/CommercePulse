@@ -39,7 +39,11 @@ total_spend = float(paid["total_spend"].sum())
 avg_roas = float(paid["avg_roas"].mean()) if paid["avg_roas"].notna().any() else 0.0
 avg_cpa = float(paid["avg_cpa"].mean()) if paid["avg_cpa"].notna().any() else 0.0
 total_sessions = int(filtered["total_sessions"].sum())
-avg_cvr = float(filtered["session_conversion_rate_pct"].mean()) if filtered["session_conversion_rate_pct"].notna().any() else 0.0
+avg_cvr = (
+    float(filtered["session_conversion_rate_pct"].mean())
+    if filtered["session_conversion_rate_pct"].notna().any()
+    else 0.0
+)
 
 col1, col2, col3, col4, col5 = st.columns(5)
 col1.metric("Total Spend", f"${total_spend:,.0f}")
@@ -71,20 +75,24 @@ st.subheader("Sessions & Conversion Funnel")
 col1, col2 = st.columns(2)
 
 with col1:
-    fig = go.Figure(go.Bar(
-        x=filtered["channel_name"],
-        y=filtered["total_sessions"],
-        name="Sessions",
-        marker_color="#636efa",
-        text=filtered["total_sessions"],
-        textposition="outside",
-    ))
-    fig.add_trace(go.Bar(
-        x=filtered["channel_name"],
-        y=filtered["session_conversions"],
-        name="Conversions",
-        marker_color="#00cc96",
-    ))
+    fig = go.Figure(
+        go.Bar(
+            x=filtered["channel_name"],
+            y=filtered["total_sessions"],
+            name="Sessions",
+            marker_color="#636efa",
+            text=filtered["total_sessions"],
+            textposition="outside",
+        )
+    )
+    fig.add_trace(
+        go.Bar(
+            x=filtered["channel_name"],
+            y=filtered["session_conversions"],
+            name="Conversions",
+            marker_color="#00cc96",
+        )
+    )
     fig.update_layout(
         template="plotly_white",
         barmode="overlay",
@@ -96,16 +104,16 @@ with col1:
     st.plotly_chart(fig, use_container_width=True)
 
 with col2:
-    fig2 = go.Figure(go.Bar(
-        x=filtered["channel_name"],
-        y=filtered["bounce_rate_pct"],
-        name="Bounce Rate %",
-        marker_color="#ef553b",
-        text=filtered["bounce_rate_pct"].apply(
-            lambda v: f"{v:.1f}%" if v is not None else ""
-        ),
-        textposition="outside",
-    ))
+    fig2 = go.Figure(
+        go.Bar(
+            x=filtered["channel_name"],
+            y=filtered["bounce_rate_pct"],
+            name="Bounce Rate %",
+            marker_color="#ef553b",
+            text=filtered["bounce_rate_pct"].apply(lambda v: f"{v:.1f}%" if v is not None else ""),
+            textposition="outside",
+        )
+    )
     fig2.update_layout(
         template="plotly_white",
         xaxis_title=None,
@@ -119,12 +127,23 @@ st.divider()
 
 # ── Channel detail table ──────────────────────────────────────────────────────
 st.subheader("Channel Performance Detail")
-show = filtered[[
-    "channel_name", "channel_type", "is_paid", "total_orders",
-    "gross_revenue", "net_revenue", "avg_order_value",
-    "total_sessions", "bounce_rate_pct", "session_conversion_rate_pct",
-    "total_spend", "avg_roas", "revenue_per_spend_dollar",
-]].copy()
+show = filtered[
+    [
+        "channel_name",
+        "channel_type",
+        "is_paid",
+        "total_orders",
+        "gross_revenue",
+        "net_revenue",
+        "avg_order_value",
+        "total_sessions",
+        "bounce_rate_pct",
+        "session_conversion_rate_pct",
+        "total_spend",
+        "avg_roas",
+        "revenue_per_spend_dollar",
+    ]
+].copy()
 for c in ["gross_revenue", "net_revenue", "avg_order_value", "total_spend"]:
     show[c] = show[c].apply(lambda v: f"${v:,.2f}" if v is not None else "—")
 for c in ["bounce_rate_pct", "session_conversion_rate_pct"]:
@@ -132,7 +151,18 @@ for c in ["bounce_rate_pct", "session_conversion_rate_pct"]:
 for c in ["avg_roas", "revenue_per_spend_dollar"]:
     show[c] = show[c].apply(lambda v: f"{v:.2f}x" if v is not None else "—")
 show.columns = [
-    "Channel", "Type", "Paid?", "Orders", "Gross Revenue", "Net Revenue",
-    "AOV", "Sessions", "Bounce %", "CVR %", "Spend", "ROAS", "Rev/Spend $",
+    "Channel",
+    "Type",
+    "Paid?",
+    "Orders",
+    "Gross Revenue",
+    "Net Revenue",
+    "AOV",
+    "Sessions",
+    "Bounce %",
+    "CVR %",
+    "Spend",
+    "ROAS",
+    "Rev/Spend $",
 ]
 st.dataframe(show, use_container_width=True, hide_index=True)

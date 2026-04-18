@@ -29,4 +29,5 @@ httpx>=0.26.0            # async test client for FastAPI
 # ── Dev tooling ───────────────────────────────────────────────
 ruff>=0.3.0              # linting + formatting
 mypy>=1.8.0              # type checking
+types-PyYAML>=6.0.1      # mypy stubs for pyyaml
 python-dotenv>=1.0.0     # .env file support

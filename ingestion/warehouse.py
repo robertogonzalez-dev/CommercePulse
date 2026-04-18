@@ -77,7 +77,7 @@ def table_exists(conn: duckdb.DuckDBPyConnection, schema: str, table: str) -> bo
         """,
         [schema, table],
     ).fetchone()
-    return result[0] > 0
+    return result is not None and result[0] > 0
 
 
 def get_max_watermark(
@@ -93,6 +93,6 @@ def get_max_watermark(
         result = conn.execute(
             f'SELECT MAX("{watermark_col}") FROM "{schema}"."{table}"'
         ).fetchone()
-        return result[0]
+        return result[0] if result is not None else None
     except Exception:
         return None

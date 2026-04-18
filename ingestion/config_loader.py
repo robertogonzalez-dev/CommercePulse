@@ -7,9 +7,8 @@ DatasetConfig dataclasses consumed by every loader.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
@@ -22,7 +21,7 @@ class DatasetConfig:
     target_table: str
     load_type: str                     # full | incremental
     primary_key: str
-    watermark_column: Optional[str]
+    watermark_column: str | None
     delimiter: str
     encoding: str
     expected_columns: list[str]

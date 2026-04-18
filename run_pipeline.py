@@ -30,9 +30,9 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from ingestion.config_loader import list_available_configs
-from ingestion.logger_setup import setup_logging
-from ingestion.pipeline import run_pipeline
+from ingestion.config_loader import list_available_configs  # noqa: E402
+from ingestion.logger_setup import setup_logging  # noqa: E402
+from ingestion.pipeline import run_pipeline  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:

@@ -17,12 +17,11 @@ import logging
 import sys
 import uuid
 from pathlib import Path
-from typing import Optional
 
 from ingestion.config_loader import list_available_configs
-from ingestion.logger_setup import setup_logging
 from ingestion.loaders.base_loader import BaseLoader, LoadResult, make_loader
 from ingestion.loaders.web_sessions_loader import WebSessionsLoader
+from ingestion.logger_setup import setup_logging
 from ingestion.warehouse import initialise_schema
 
 logger = logging.getLogger(__name__)
@@ -59,7 +58,7 @@ def build_loader(
 
 
 def run_pipeline(
-    datasets: Optional[list[str]] = None,
+    datasets: list[str] | None = None,
     project_root: Path | None = None,
     batch_id: str | None = None,
 ) -> dict[str, LoadResult]:

@@ -10,23 +10,19 @@ Run:
 
 from __future__ import annotations
 
-import os
-import tempfile
+# ── Fix import paths ─────────────────────────────────────────
+import sys
 from io import StringIO
 from pathlib import Path
 
-import duckdb
 import pandas as pd
 import pytest
 
-# ── Fix import paths ─────────────────────────────────────────
-import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from ingestion.config_loader import DatasetConfig, load_config, list_available_configs
-from ingestion.validator import ValidationResult, add_row_hash, validate
-from ingestion.loaders.base_loader import BaseLoader, LoadResult
-
+from ingestion.config_loader import DatasetConfig, list_available_configs, load_config
+from ingestion.loaders.base_loader import BaseLoader
+from ingestion.validator import add_row_hash, validate
 
 # ─────────────────────────────────────────────────────────────
 # Fixtures
@@ -159,7 +155,7 @@ class TestBaseLoader:
         assert result.rows_loaded == result.rows_read
 
     def test_full_load_is_idempotent(self, temp_project: Path):
-        from ingestion.warehouse import initialise_schema, get_connection
+        from ingestion.warehouse import get_connection, initialise_schema
         initialise_schema()
 
         config = load_config("customers")
@@ -176,7 +172,7 @@ class TestBaseLoader:
         assert count == result1.rows_read == result2.rows_read
 
     def test_audit_columns_are_present(self, temp_project: Path):
-        from ingestion.warehouse import initialise_schema, get_connection
+        from ingestion.warehouse import get_connection, initialise_schema
         initialise_schema()
 
         config = load_config("customers")
@@ -198,7 +194,7 @@ class TestBaseLoader:
         assert len(_row_hash) == 64  # SHA-256 hex digest
 
     def test_ingestion_log_is_written(self, temp_project: Path):
-        from ingestion.warehouse import initialise_schema, get_connection
+        from ingestion.warehouse import get_connection, initialise_schema
         initialise_schema()
 
         config = load_config("customers")

@@ -8,10 +8,10 @@ used by all loaders.
 
 from __future__ import annotations
 
-import os
 import logging
-from pathlib import Path
+import os
 from contextlib import contextmanager
+from pathlib import Path
 
 import duckdb
 

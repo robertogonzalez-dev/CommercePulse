@@ -7,11 +7,12 @@ transform isn't sufficient (e.g. derived columns, type coercions).
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pandas as pd
 
 from ingestion.config_loader import load_config
 from ingestion.loaders.base_loader import BaseLoader
-from pathlib import Path
 
 
 class WebSessionsLoader(BaseLoader):

@@ -11,15 +11,13 @@ from __future__ import annotations
 import logging
 import time
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Optional
 
-import duckdb
 import pandas as pd
 
 from ingestion.config_loader import DatasetConfig, load_config
-from ingestion.validator import ValidationResult, add_row_hash, validate
+from ingestion.validator import add_row_hash, validate
 from ingestion.warehouse import get_max_watermark, managed_connection
 
 logger = logging.getLogger(__name__)
@@ -39,12 +37,12 @@ class LoadResult:
         self.rows_read: int = 0
         self.rows_loaded: int = 0
         self.rows_rejected: int = 0
-        self.error_message: Optional[str] = None
-        self.started_at: datetime = datetime.now(tz=timezone.utc)
-        self.completed_at: Optional[datetime] = None
+        self.error_message: str | None = None
+        self.started_at: datetime = datetime.now(tz=UTC)
+        self.completed_at: datetime | None = None
 
     @property
-    def duration_seconds(self) -> Optional[float]:
+    def duration_seconds(self) -> float | None:
         if self.completed_at:
             return (self.completed_at - self.started_at).total_seconds()
         return None
@@ -52,7 +50,7 @@ class LoadResult:
     def finish(self, status: str, error: str | None = None) -> None:
         self.status = status
         self.error_message = error
-        self.completed_at = datetime.now(tz=timezone.utc)
+        self.completed_at = datetime.now(tz=UTC)
 
     def __str__(self) -> str:
         return (
@@ -154,7 +152,7 @@ class BaseLoader:
 
     def transform(self, df: pd.DataFrame) -> pd.DataFrame:
         """Add standard audit columns. Override to add dataset-specific logic."""
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         source_file_name = Path(self.config.source_file).name
 
         df = add_row_hash(df)
@@ -275,7 +273,7 @@ class BaseLoader:
                 "completed_at": result.completed_at.isoformat() if result.completed_at else None,
                 "duration_seconds": result.duration_seconds,
             }
-            log_df = pd.DataFrame([log_row])
+            log_df = pd.DataFrame([log_row])  # noqa: F841 — referenced by DuckDB query
             with managed_connection() as conn:
                 conn.execute(
                     "INSERT INTO bronze.ingestion_log SELECT * FROM log_df"

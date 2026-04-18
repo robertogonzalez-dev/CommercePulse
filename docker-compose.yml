@@ -1,0 +1,86 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CommercePulse — Docker Compose
+#
+# Services:
+#   pipeline   — Bronze ingestion + dbt Silver/Gold transform (exits when done)
+#   api        — FastAPI analytics REST API          (port 8000)
+#   streamlit  — Interactive analytics dashboard     (port 8501)
+#
+# Shared volumes:
+#   warehouse_data  — DuckDB file: written by pipeline, read-only for api/streamlit
+#   pipeline_logs   — Ingestion logs accessible from host
+#
+# Usage:
+#   docker compose up                   # full stack (pipeline → api → streamlit)
+#   docker compose up api streamlit     # serve only (assumes warehouse exists)
+#   docker compose run --rm pipeline    # re-run pipeline on demand
+#   docker compose down -v              # tear down + delete volumes
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile.pipeline
+    volumes:
+      - warehouse_data:/app/data/warehouse
+      - pipeline_logs:/app/logs
+    environment:
+      CP_DB_PATH: /app/data/warehouse/commercepulse.duckdb
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    env_file:
+      - path: .env
+        required: false
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "${CP_API_PORT:-8000}:8000"
+    volumes:
+      - warehouse_data:/app/data/warehouse:ro
+    environment:
+      CP_DB_PATH: /app/data/warehouse/commercepulse.duckdb
+      CP_API_HOST: "0.0.0.0"
+      CP_API_PORT: "8000"
+      CP_DEBUG: ${CP_DEBUG:-false}
+      CP_CORS_ORIGINS: '["http://localhost:8501","http://localhost:3000"]'
+    env_file:
+      - path: .env
+        required: false
+    depends_on:
+      pipeline:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - warehouse_data:/app/data/warehouse:ro
+    environment:
+      CP_DB_PATH: /app/data/warehouse/commercepulse.duckdb
+      CP_API_BASE_URL: http://api:8000
+      CP_CACHE_TTL_SECONDS: ${CP_CACHE_TTL_SECONDS:-300}
+    env_file:
+      - path: .env
+        required: false
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  warehouse_data:
+  pipeline_logs:

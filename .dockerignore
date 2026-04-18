@@ -1,0 +1,38 @@
+# Version control
+.git
+.github
+
+# Python artefacts
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.mypy_cache
+.ruff_cache
+.pytest_cache
+htmlcov
+.coverage
+
+# Generated warehouse (rebuilt by pipeline container)
+data/warehouse/
+
+# Logs
+logs/
+
+# dbt build artefacts
+transform/dbt_project/target/
+transform/dbt_project/logs/
+transform/dbt_project/dbt_packages/
+
+# Secrets — never in image
+.env
+.env.*
+!.env.example
+
+# Editor and OS
+.vscode
+.claude
+.DS_Store
+Thumbs.db
+*.swp

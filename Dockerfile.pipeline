@@ -1,0 +1,30 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        gcc \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install dependencies first for layer-cache efficiency
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source
+COPY ingestion/ ingestion/
+COPY transform/ transform/
+COPY data/raw/ data/raw/
+COPY run_pipeline.py .
+COPY scripts/ scripts/
+
+RUN chmod +x scripts/entrypoint_pipeline.sh
+
+# Non-root user; pre-create writable dirs
+RUN useradd -r -u 1001 -d /app appuser \
+    && mkdir -p data/warehouse logs \
+    && chown -R appuser:appuser /app
+
+USER appuser
+
+ENTRYPOINT ["bash", "scripts/entrypoint_pipeline.sh"]

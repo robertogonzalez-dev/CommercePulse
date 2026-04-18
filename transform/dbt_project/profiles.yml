@@ -16,12 +16,12 @@ commercepulse:
   outputs:
     dev:
       type: duckdb
-      path: "../../data/warehouse/commercepulse.duckdb"
+      path: "{{ env_var('CP_DB_PATH', '../../data/warehouse/commercepulse.duckdb') }}"
       schema: main
       threads: 4
 
     prod:
       type: duckdb
-      path: "../../data/warehouse/commercepulse.duckdb"
+      path: "{{ env_var('CP_DB_PATH', '../../data/warehouse/commercepulse.duckdb') }}"
       schema: main
       threads: 4

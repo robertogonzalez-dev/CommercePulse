@@ -1,13 +1,13 @@
-.PHONY: help install ingest ingest-dataset ingest-debug \
+.PHONY: help install ingest ingest-dataset ingest-debug list-datasets \
         transform transform-test transform-docs \
         api app test lint typecheck clean
 
 PYTHON   := python
 PYTEST   := pytest
 DBT      := dbt
-DATASET  ?= orders    # default dataset for ingest-dataset target
+DATASET  ?= orders
 
-# ── Help ──────────────────────────────────────────────────────────────
+# ── Help ──────────────────────────────────────────────────────────────────────
 help:
 	@echo ""
 	@echo "CommercePulse — Makefile targets"
@@ -24,7 +24,7 @@ help:
 	@echo "  Transform (dbt — Silver & Gold layers)"
 	@echo "    transform          Run all dbt models"
 	@echo "    transform-test     Run dbt model tests"
-	@echo "    transform-docs     Generate and serve dbt docs"
+	@echo "    transform-docs     Generate and serve dbt docs (localhost:8080)"
 	@echo ""
 	@echo "  Serve"
 	@echo "    api                Start FastAPI server  (http://localhost:8000)"
@@ -40,11 +40,11 @@ help:
 	@echo "────────────────────────────────────────────────────────"
 	@echo ""
 
-# ── Setup ─────────────────────────────────────────────────────────────
+# ── Setup ─────────────────────────────────────────────────────────────────────
 install:
 	pip install -r requirements.txt
 
-# ── Ingestion ─────────────────────────────────────────────────────────
+# ── Ingestion ─────────────────────────────────────────────────────────────────
 ingest:
 	$(PYTHON) run_pipeline.py
 
@@ -57,24 +57,25 @@ ingest-debug:
 list-datasets:
 	$(PYTHON) run_pipeline.py --list
 
-# ── dbt Transform ─────────────────────────────────────────────────────
+# ── dbt Transform ─────────────────────────────────────────────────────────────
 transform:
-	cd transform && $(DBT) run
+	cd transform/dbt_project && $(DBT) run --profiles-dir .
 
 transform-test:
-	cd transform && $(DBT) test
+	cd transform/dbt_project && $(DBT) test --profiles-dir .
 
 transform-docs:
-	cd transform && $(DBT) docs generate && $(DBT) docs serve
+	cd transform/dbt_project && $(DBT) docs generate --profiles-dir .
+	cd transform/dbt_project && $(DBT) docs serve --profiles-dir .
 
-# ── Serve ─────────────────────────────────────────────────────────────
+# ── Serve ─────────────────────────────────────────────────────────────────────
 api:
 	$(PYTHON) -m uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
 app:
 	$(PYTHON) -m streamlit run app/main.py
 
-# ── Quality ───────────────────────────────────────────────────────────
+# ── Quality ───────────────────────────────────────────────────────────────────
 test:
 	$(PYTEST) tests/ -v --tb=short --cov=ingestion --cov-report=term-missing
 
@@ -82,9 +83,9 @@ lint:
 	ruff check . && ruff format --check .
 
 typecheck:
-	mypy ingestion/ --ignore-missing-imports
+	mypy ingestion/ api/ --ignore-missing-imports
 
-# ── Housekeeping ──────────────────────────────────────────────────────
+# ── Housekeeping ──────────────────────────────────────────────────────────────
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -name "*.pyc" -delete

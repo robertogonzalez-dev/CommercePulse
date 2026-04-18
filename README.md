@@ -223,15 +223,14 @@ make clean            Remove caches and logs
 
 ## Implementation Phases
 
-| Phase | Status      | Description                    |
-|-------|-------------|--------------------------------|
-| 1     |  Complete | Blueprint & data model design  |
-| 2     |  Complete | Foundation & Bronze ingestion  |
-| 3     |  Next     | Silver dbt models              |
-| 4     |  Planned  | Gold dimensional models        |
-| 5     |  Planned  | FastAPI metric layer           |
-| 6     |  Planned  | Streamlit dashboard            |
-| 7     |  Planned  | CI/CD & documentation polish   |
+| Phase | Status         | Description                                          |
+|-------|----------------|------------------------------------------------------|
+| 1     | ✅ Complete    | Blueprint & data model design                        |
+| 2     | ✅ Complete    | Foundation & Bronze ingestion pipeline               |
+| 3     | ✅ Complete    | Silver/Gold dbt models — star schema + 205 tests     |
+| 4     | 🔄 In Progress | FastAPI metric layer                                 |
+| 5     | 📋 Planned     | Streamlit dashboard                                  |
+| 6     | 📋 Planned     | CI/CD & documentation polish                         |
 
 ---
 
